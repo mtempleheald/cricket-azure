@@ -1,0 +1,283 @@
+:root {
+    --board-red: #ED3737;
+    --board-green: #4F9962;
+    --board-cream: #F7E9CD;
+    --board-wire: silver;
+    --board-bg: #151515;
+    --board-red-dull: #761C1C;
+    --board-green-dull: #274C31;
+    --board-cream-dull: #7B7466;
+}
+* { /* Not botherred about resetting everything, but layout is important here, let's keep it simple */
+    margin: 0;
+    padding: 0;
+}
+html {
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+body {    
+    background-color: var(--board-bg, black);
+    color: var(--board-wire, silver);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    /* font-size: 1.3em; */
+}
+#container {
+    display: grid;
+    /*  Use a single column grid rather than flex by default because
+        larger screens need switch to 2 column grid layout */  
+    grid-template-areas: 
+        "header"
+        "scores"
+        "input"
+        "history"
+        "footer";    
+    justify-items: start; /* align items on row axis - start|end|center|stretch */
+    align-items: start; /* align items on column axis - start|end|center|stretch */   
+    justify-content: stretch; /* whole grid on row axis - start|end|center|stretch|space-around|space-between|space-evenly */
+    align-content: stretch; /* whole grid on column axis - start|end|center|stretch|space-around|space-between|space-evenly */
+    /* grid-gap: 1em; */ /* Leave a small gap between sections */
+    /* margin: 0 1em; */
+    width : 100%;
+}
+header {
+    grid-area: header;
+    width: 100%;
+}
+h1 {
+    text-align: center;
+    color: var(--board-bg);
+    text-shadow:
+		-1px -1px 0 var(--board-wire),
+		1px -1px 0 var(--board-wire),
+		-1px 1px 0 var(--board-wire),
+        1px 1px 0 var(--board-wire);
+    font-size: 400%;
+}
+section {
+    display: block;
+}
+section.scores {
+    grid-area: scores;
+}
+section.visual-entry {
+    display: none;
+    grid-area: board;
+    align-self: start;
+    justify-self: start;
+    margin-right: auto;
+}
+section.simple-entry {
+    grid-area: input;
+    display: grid;
+    grid-template-areas:
+        "t20 t19 t18 t17 t16 t15 ."
+        "d20 d19 d18 d17 d16 d15 outer"
+        "s20 s19 s18 s17 s16 s15 bull"
+        ". miss . skip . undo .";
+    justify-self: stretch;
+    align-self: stretch;
+    /* grid-auto-rows: 64px;
+    column-gap: 0.5em;
+    row-gap: 0.5em; */
+}
+section.history {
+    grid-area: history;
+    height: 358px;/* 9 lines in table plus caption */
+    overflow: hidden;
+}
+footer {
+    grid-area: footer;
+}
+button {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    overflow: visible;    
+    color: var(--board-cream);    
+    background-color: var(--board-green-dull);
+    box-shadow: inset 0 0 1px 0 var(--board-cream);
+    /* border-radius: 15%; *//* 50% would be circular buttons*/
+    padding: 0.2em;
+    margin: 0.1em;
+}
+
+@media only screen and (max-width: 1250px) and (orientation: landscape) {
+    #container {
+    /*  Still small screen so use buttons not interactive dartboard
+        but 2 column layout with buttons on the right */
+        grid-template-areas: 
+            "header header header"
+            "scores input history"            
+            "footer . .";
+    }
+    section.simple-entry {
+        grid-template-areas:
+        "miss skip undo"
+        "t20 d20 s20"
+        "t19 d19 s19"
+        "t18 d18 s18"
+        "t17 d17 s17"
+        "t16 d16 s16"
+        "t15 d15 s15"
+        "bull outer .";
+    }
+}
+@media only screen and (min-width: 1200px) and (orientation: landscape) {
+    #container {
+    /*  Screen is large enough to show the dartboard
+        hide the simple view and switch to 2 column fixed width layout */
+        grid-template-columns: 600px, 900px;
+        grid-template-areas: 
+            "header board"
+            "scores board"
+            "history board"
+            "footer .";
+    }
+    section.visual-entry {
+        display: block;
+    }
+    section.simple-entry {
+        display: none;
+    }
+    #container {
+        justify-content: start; /* whole grid on row axis - start|end|center|stretch|space-around|space-between|space-evenly */
+        align-content: start; /* whole grid on column axis - start|end|center|stretch|space-around|space-between|space-evenly */
+    }
+    table {
+        min-width: 20em;
+    }
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+table caption {
+    caption-side: top;
+    padding: 0.5em;
+}
+table th, 
+table td {
+    font-weight: normal;
+    border: 1px solid var(--board-wire);
+    color: var(--board-wire);
+    text-align: inherit;
+    padding: 0.25em;
+}
+table td > span {
+    padding: 0 0.5em;
+}
+.good {
+    color: var(--board-green);
+    font-weight: bold;
+}
+.bad {
+    color: var(--board-red);
+    font-weight: bold;
+}
+table th > span:before {
+    content: "\23F9";
+    color: var(--board-red);
+    padding: 0.5em;
+}
+table th > span.current:before {
+    content: "\25B6";
+    color: var(--board-green);
+}
+table td {
+    text-align: center;
+}
+
+/* The following is rather ugly, not sure if template areas can be parameterised... */
+button[name="T20"] {
+    grid-area: t20;
+}
+button[name="T19"] {
+    grid-area: t19;
+}
+button[name="T18"] {
+    grid-area: t18;
+}
+button[name="T17"] {
+    grid-area: t17;
+}
+button[name="T16"] {
+    grid-area: t16;
+}
+button[name="T15"] {
+    grid-area: t15;
+}
+button[name="D20"] {
+    grid-area: d20;
+}
+button[name="D19"] {
+    grid-area: d19;
+}
+button[name="D18"] {
+    grid-area: d18;
+}
+button[name="D17"] {
+    grid-area: d17;
+}
+button[name="D16"] {
+    grid-area: d16;
+}
+button[name="D15"] {
+    grid-area: d15;
+}
+button[name="S20"] {
+    grid-area: s20;
+}
+button[name="S19"] {
+    grid-area: s19;
+}
+button[name="S18"] {
+    grid-area: s18;
+}
+button[name="S17"] {
+    grid-area: s17;
+}
+button[name="S16"] {
+    grid-area: s16;
+}
+button[name="S15"] {
+    grid-area: s15;
+}
+button[name="Outer"] {
+    grid-area: outer;
+}
+button[name="Bull"] {
+    grid-area: bull;
+}
+button[name=Miss] {
+    grid-area: miss;
+    background-color: var(--board-red);
+}
+button[name=Undo] {
+    grid-area: undo;
+}
+button[name=Skip] {
+    grid-area: skip;
+}
+
+/* svg#dartboard {
+    background:
+    linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+    linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+    background-color: #222;
+    background-size: 20px 20px;
+} */
+path#labels {
+    fill: var(--board-bg);
+    stroke: var(--board-wire);
+    stroke-width: 1.5;
+}
+path:hover, circle:hover {
+    fill: yellow;
+}
