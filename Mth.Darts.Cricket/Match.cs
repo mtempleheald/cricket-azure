@@ -53,10 +53,7 @@ namespace Mth.Darts.Cricket
         // * non-MVP - Authentication & Authorisation check
         public Match Throw (Section? section = null, Bed? bed = null) {
             
-            if (section.HasValue && bed.HasValue) {
-                // A valid throw has been made and needs to be applied to the current game
-                currentGame.Throw(section.Value, bed.Value, scoringMode);
-            }
+            currentGame.Throw(section, bed, scoringMode, maxRounds);
             
             return this;
         }
