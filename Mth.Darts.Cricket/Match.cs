@@ -7,60 +7,70 @@ namespace Mth.Darts.Cricket
     // We're after transience for a simple serverless design, take the data with us
     // Cricket Match is the main object in our application logic containing all
     // However most of the work happens within the current game    
-    public class Match
+    public sealed class Match
     {
-        public Game currentGame{ get; set; }
-        public List<Game> currentGameHistory{ get; set; }
-        public List<Game> previousGames{ get; set; }
-        public List<MatchScore> scores{ get; set; }
-        public MatchConfig config{ get; set; }
-
-        public Match(List<String> players, ScoringMode scoringMode, int rounds)
+        public ScoringMode scoringMode {get; set;}
+        public int maxRounds {get; set;}
+        public List<MatchScore> scores {get; set;}
+        public Game currentGame {get; set;}
+        public List<Game> currentGameHistory {get; set;}
+        public List<Game> previousGames {get; set;}
+        
+        // Construct a new match from scratch with an empty scoreboard
+        public Match(List<String> players, ScoringMode scoringMode, int maxRounds)
         {
-            currentGame = new Game (players);
-
-            currentGameHistory = new List<Game>();
-
-            previousGames = new List<Game>();
-
-            //scores = players.Select(p => new MatchScore(p, 0, 1)).ToList();
+            // Match Config
+            this.scoringMode = scoringMode;
+            this.maxRounds = maxRounds;
+            // Initialise empty scores for the match
             scores = (
                 from player in players
-                select new MatchScore (player, 0, 1)
+                select new MatchScore (player, 0, 0)
             ).ToList();
+            // defer initial game creation to the Game class
+            currentGame = new Game (players);
+            // A new match will have no game history
+            currentGameHistory = new List<Game>();
+            previousGames = new List<Game>();
+        }
 
-            config = new MatchConfig(scoringMode, rounds);
+        // Construct a new match object by deserialising an existing match
+        public Match () {
+            // TODO
+        }
+
+        // Throw method should trigger:
+        // * Increment current turn
+        // * Rotate players every 3 darts
+        // * Increment rounds every 3 * playerCount throws
+        // * Update game section states
+        // * Update game points
+        // * Update game rankings
+        // * Update game completion status
+        // * Update match points
+        // * Update match rankings
+        // * non-MVP - Data persistence
+        // * non-MVP - Authentication & Authorisation check
+        public Match Throw (Section? section = null, Bed? bed = null) {
+            
+            if (section.HasValue && bed.HasValue) {
+                // A valid throw has been made and needs to be applied to the current game
+                currentGame.Throw(section.Value, bed.Value);
+            }
+            
+            return this;
+        }
+
+        // Given the current state of the 
+        private void UpdateMatchPoints() {
+            
+        }
+        private void UpdateMatchRankings() {
+
         }
 
     }
-    // Config never makes sense outside the context of a Match object
-    // We're interested in the values only, so use a struct instead of a class
-    public struct MatchConfig
-    {
-        internal ScoringMode scoringMode{ get; }
-        internal int rounds{ get; private set; }
-        internal MatchConfig (ScoringMode scoringMode, int rounds) : this() {
-            this.scoringMode = scoringMode;
-            this.rounds = rounds;
-        }
-    };
 
-    // Scoring Mode can only be one of a selected few values, enforce that with enum type
-    public enum ScoringMode
-    {
-        standard,
-        cutthroat
-    };
-    // 
-    public struct MatchScore
-    {
-        internal String player{ get; }
-        internal int points{ get; }
-        internal int ranking{ get; }
-        public MatchScore (String player, int points, int ranking) : this() {
-            this.player = player;
-            this.points = points;
-            this.ranking = ranking;
-        }
-    }
+    
+    
 }

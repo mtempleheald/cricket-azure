@@ -5,7 +5,7 @@ using Mth.Darts.Cricket;
 
 namespace Mth.Darts.Cricket.Tests
 {
-    public class CreateMatch
+    public class CreateMatchTests
     {
         [Fact]
         public void CreateMatch_2Player_Success()
@@ -16,15 +16,16 @@ namespace Mth.Darts.Cricket.Tests
 
             var match = new Match (players, ScoringMode.standard, 20);
 
-            Assert.Equal (ScoringMode.standard, match.config.scoringMode);
-            Assert.NotEqual (ScoringMode.cutthroat, match.config.scoringMode);
-            Assert.True (ScoringMode.standard == match.config.scoringMode);
-            Assert.False (ScoringMode.cutthroat == match.config.scoringMode);
+            Assert.Equal (players.Count, match.currentGame.scores.Count) ;
+
+            Assert.NotEqual (ScoringMode.cutthroat, match.scoringMode);
+            Assert.True (ScoringMode.standard == match.scoringMode);
+            Assert.False (ScoringMode.cutthroat == match.scoringMode);
 
             Assert.Empty(match.currentGameHistory);
             Assert.NotEmpty(match.currentGame.scores);
 
-            Assert.NotNull(match.scores[0].ranking);
+            Assert.NotNull(match.scores[0].player);
             Assert.IsType(Type.GetType("System.Int32"), match.scores[0].ranking);
         }
     }
