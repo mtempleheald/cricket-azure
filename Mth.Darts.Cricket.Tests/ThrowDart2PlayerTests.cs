@@ -14,7 +14,7 @@ namespace Mth.Darts.Cricket.Tests
             players = new List<String>();
             players.Add("Brooks");
             players.Add("T1000");
-            match = new Match (players, ScoringMode.standard, 20);
+            match = new Match (players, ScoringMode.Standard, 20);
         }
 
         [Fact]
@@ -38,20 +38,13 @@ namespace Mth.Darts.Cricket.Tests
             match.Throw (Section.Twenty, Bed.Treble);
             Assert.Equal (1, match.currentGame.currentRound);
             match.Throw (Section.Twenty, Bed.Treble);
-            Assert.Equal (2, match.currentGame.currentRound);
+            Assert.Equal (1, match.currentGame.currentRound);
+            match.Throw (Section.Twenty, Bed.Treble);
+            Assert.Equal (1, match.currentGame.currentRound);
+            match.Throw (Section.Twenty, Bed.Treble);
+            Assert.Equal (1, match.currentGame.currentRound);
             match.Throw (Section.Twenty, Bed.Treble);
             Assert.Equal (2, match.currentGame.currentRound);
-            match.Throw (Section.Twenty, Bed.Treble);
-            Assert.Equal (2, match.currentGame.currentRound);
-            match.Throw (Section.Twenty, Bed.Treble);
-            Assert.Equal (3, match.currentGame.currentRound);
-            match.Throw (Section.Twenty, Bed.Treble);
-            Assert.Equal (3, match.currentGame.currentRound);
-            match.Throw (Section.Twenty, Bed.Treble);
-            Assert.Equal (3, match.currentGame.currentRound);
-            match.Throw (Section.Twenty, Bed.Treble);
-            Assert.Equal (4, match.currentGame.currentRound);
-
         }
         [Fact]
         public void ThrowDart_currentPlayer_Rotated() {
@@ -84,6 +77,18 @@ namespace Mth.Darts.Cricket.Tests
             ).First();
 
             Assert.Equal (3, countTwenties);
+        }
+
+        [Fact]
+        public void ThrowDart_Points_Updated () {
+            
+            match.Throw (Section.Twenty, Bed.Double);
+            Assert.Equal (0, match.currentGame.scores.First().points);
+            match.Throw (Section.Twenty, Bed.Double);
+            Assert.Equal (20, match.currentGame.scores.First().points);
+            match.Throw (null, null);
+            Assert.Equal (20, match.currentGame.scores.First().points);
+            
         }
     }
 }

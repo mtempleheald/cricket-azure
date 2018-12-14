@@ -14,13 +14,13 @@ namespace Mth.Darts.Cricket.Tests
             players.Add("Brooks");
             players.Add("T1000");
 
-            var match = new Match (players, ScoringMode.standard, 20);
+            var match = new Match (players, ScoringMode.Standard, 20);
 
             Assert.Equal (players.Count, match.currentGame.scores.Count) ;
 
-            Assert.NotEqual (ScoringMode.cutthroat, match.scoringMode);
-            Assert.True (ScoringMode.standard == match.scoringMode);
-            Assert.False (ScoringMode.cutthroat == match.scoringMode);
+            Assert.NotEqual (ScoringMode.CutThroat, match.scoringMode);
+            Assert.True (ScoringMode.Standard == match.scoringMode);
+            Assert.False (ScoringMode.CutThroat == match.scoringMode);
 
             Assert.Empty(match.currentGameHistory);
             Assert.NotEmpty(match.currentGame.scores);

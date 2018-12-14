@@ -55,7 +55,7 @@ namespace Mth.Darts.Cricket
             
             if (section.HasValue && bed.HasValue) {
                 // A valid throw has been made and needs to be applied to the current game
-                currentGame.Throw(section.Value, bed.Value);
+                currentGame.Throw(section.Value, bed.Value, scoringMode);
             }
             
             return this;

@@ -8,11 +8,15 @@ namespace Mth.Darts.Cricket
         internal String player {get; set;}
         internal int order {get; set;}
         internal List<SectionState> states {get; set;}
-        internal PlayerScore(String player, int order, List<SectionState> states) : this()
+        internal int points {get; set;}
+        internal int ranking {get; set;}
+        internal PlayerScore(String player, int order, List<SectionState> states, int points = 0, int ranking = 0) : this()
         {
             this.player = player;
             this.order = order;
             this.states = states;
+            this.points = points;
+            this.ranking = ranking;
         }
 
     };

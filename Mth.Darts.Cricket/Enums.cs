@@ -7,13 +7,13 @@ namespace Mth.Darts.Cricket
     // Cricket recognises this subset of sections
     public enum Section {
         //None,
-        Twenty,
-        Nineteen,
-        Eighteen,
-        Seventeen,
-        Sixteen,
-        Fifteen,
-        Bull
+        Twenty = 20,
+        Nineteen = 19,
+        Eighteen = 18,
+        Seventeen = 17,
+        Sixteen = 16,
+        Fifteen = 15,
+        Bull = 25
     }
     // A dartboard splits each section into the following beds
     // Note that Treble is not allowable for the Bull section
@@ -27,8 +27,8 @@ namespace Mth.Darts.Cricket
     // The addition of a new mode will require new functionality
     public enum ScoringMode
     {
-        standard,
-        cutthroat
+        Standard,
+        CutThroat
     };
 
 }
