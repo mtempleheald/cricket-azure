@@ -4,16 +4,18 @@ using System.Linq;
 
 namespace Mth.Darts.Cricket
 {
-    public sealed class Game {
+    public sealed class Game : ICloneable
+    {
         // Game Status
-        internal String currentPlayer {get; set;}
-        internal int currentDart {get; set;}
-        internal int currentRound {get; set;}
-        internal Boolean complete {get; set;}
+        internal String currentPlayer { get; set; }
+        internal int currentDart { get; set; }
+        internal int currentRound { get; set; }
+        internal Boolean complete { get; set; }
         // Scores
-        public List<GameScore> scores {get; set;}
-        
-        public Game (List<String> players) {
+        public List<GameScore> scores { get; set; }
+
+        public Game(List<String> players)
+        {
 
             this.currentPlayer = players.First();
             this.currentDart = 1;
@@ -21,15 +23,17 @@ namespace Mth.Darts.Cricket
             this.complete = false;
 
             scores = players.AsEnumerable()
-                    .Select((player, index) => 
-                        new GameScore (player, index, InitGameScoreSectionStates())
+                    .Select((player, index) =>
+                        new GameScore(player, index, InitGameScoreSectionStates())
                     ).ToList();
 
         }
 
-        internal void Throw (Section? section, Bed? bed, ScoringMode scoringMode, int maxRounds = 0) {
-            
-            if (section.HasValue && bed.HasValue) {
+        internal void Throw(Section? section, Bed? bed, ScoringMode scoringMode, int maxRounds = 0)
+        {
+
+            if (section.HasValue && bed.HasValue)
+            {
                 // A valid throw has been made and needs to be applied to the current game
                 UpdateScores(section.Value, bed.Value, scoringMode);
 
@@ -40,21 +44,24 @@ namespace Mth.Darts.Cricket
             currentDart = NextDart(currentDart);
 
             // rotate player every 3 darts
-            if (currentDart == 1) {
-                currentPlayer = NextValueFromRotatingList (currentPlayer
-                                                          ,(from s in scores
-                                                            orderby s.order
-                                                            select s.player).ToList());
+            if (currentDart == 1)
+            {
+                currentPlayer = NextValueFromRotatingList(currentPlayer
+                                                          , (from s in scores
+                                                             orderby s.order
+                                                             select s.player).ToList());
             }
 
             // increment current round once we hit the first player again
-            currentRound = (currentDart == 1 && currentPlayer == scores.First().player) ? currentRound + 1 : currentRound;    
+            currentRound = (currentDart == 1 && currentPlayer == scores.First().player) ? currentRound + 1 : currentRound;
 
         }
         // The game is complete once a player has hit all targets and is ranked first
         // or if all rounds have completed
-        private void UpdateGameCompletionStatus(ScoringMode scoringMode, int maxRounds) {
-            if (maxRounds < currentRound) {
+        private void UpdateGameCompletionStatus(ScoringMode scoringMode, int maxRounds)
+        {
+            if (maxRounds < currentRound)
+            {
                 complete = true;
                 return;
             }
@@ -62,19 +69,20 @@ namespace Mth.Darts.Cricket
                 scores.OrderBy(s => s.ranking)
                     .First()
                     .states
-                    .Sum(s => s.count * (int) s.section) == 390) ? true : false;
+                    .Sum(s => s.count * (int)s.section) == 390) ? true : false;
         }
 
         //   apply any extra hits as points according to the match configuration options
-        private void UpdateScores(Section section, Bed bed, ScoringMode scoringMode) {
+        private void UpdateScores(Section section, Bed bed, ScoringMode scoringMode)
+        {
             // examine how many points have been scored this throw
             // (hits on score board + hits this throw - 3) * section value
             int alreadyHit = (from score in scores
-                     where score.player == currentPlayer
-                     from state in score.states
-                     where state.section == section
-                     select state.count).FirstOrDefault();
-            int pointsScored = Math.Max (0, (alreadyHit + (int) bed - 3) * (int) section);
+                              where score.player == currentPlayer
+                              from state in score.states
+                              where state.section == section
+                              select state.count).FirstOrDefault();
+            int pointsScored = Math.Max(0, (alreadyHit + (int)bed - 3) * (int)section);
             //Console.WriteLine ("pointsScored = {0} ({1} + {2} - 3 * {3}", pointsScored, alreadyHit, (int) bed, (int) section);
 
             // Review all player scores
@@ -82,24 +90,24 @@ namespace Mth.Darts.Cricket
             //     update the section state for the section which was hit and only up to the maximum number of hits (3)
             scores = (
                 from score in scores
-                select score.player == currentPlayer 
-                    ? new GameScore (score.player
-                                      ,score.order
-                                      ,(from state in score.states
-                                        select state.section == section
-                                        ? new GameScoreSectionState (state.section
-                                                           ,state.count + (int) bed > 3
-                                                            ? 3
-                                                            : state.count + (int) bed)
-                                        : state
+                select score.player == currentPlayer
+                    ? new GameScore(score.player
+                                      , score.order
+                                      , (from state in score.states
+                                         select state.section == section
+                                         ? new GameScoreSectionState(state.section
+                                                            , state.count + (int)bed > 3
+                                                             ? 3
+                                                             : state.count + (int)bed)
+                                         : state
                                        ).ToList()
-                                      ,(scoringMode == ScoringMode.Standard) ? score.points + pointsScored : score.points
-                                      ,score.ranking)
-                    : new GameScore (score.player
-                                      ,score.order
-                                      ,score.states
-                                      ,points: (scoringMode == ScoringMode.CutThroat) ? score.points + pointsScored : score.points 
-                                      ,ranking: score.ranking)
+                                      , (scoringMode == ScoringMode.Standard) ? score.points + pointsScored : score.points
+                                      , score.ranking)
+                    : new GameScore(score.player
+                                      , score.order
+                                      , score.states
+                                      , points: (scoringMode == ScoringMode.CutThroat) ? score.points + pointsScored : score.points
+                                      , ranking: score.ranking)
             ).ToList();
             // Calculate the new ranking now that the scores have been updated
             // These rankings must consider the effective points, bearing in mind states and scoring mode
@@ -107,31 +115,34 @@ namespace Mth.Darts.Cricket
             // CutThroat: effective points = SUM(state.section * state.count) - points
             scores = (
                 from score in scores
-                let hiddenPoints = score.states.Sum(s => s.count * (int) s.section)
+                let hiddenPoints = score.states.Sum(s => s.count * (int)s.section)
                 let effectivePoints = (scoringMode == ScoringMode.CutThroat) ? hiddenPoints - score.points : hiddenPoints + score.points
                 orderby effectivePoints descending
                 select score
             )//.ToList()
-            .Select((s, i) => new GameScore (s.player
-                                       ,s.order
-                                       ,s.states
-                                       ,s.points
-                                       ,ranking: i + 1))
+            .Select((s, i) => new GameScore(s.player
+                                       , s.order
+                                       , s.states
+                                       , s.points
+                                       , ranking: i + 1))
             .OrderBy(s => s.order)
             .ToList();
         }
 
         // General function which returns the next string from a list of strings given the current string
         // If the current value is the last entry then this method returns the first value
-        private static string NextValueFromRotatingList (string currentValue, List<String> ListOfValues) { 
+        private static string NextValueFromRotatingList(string currentValue, List<String> ListOfValues)
+        {
             var firstValue = ListOfValues.First(); // capture in case the currentPlayer is also the last player
             var nextValue = ListOfValues.SkipWhile(p => p != currentValue).Skip(1).FirstOrDefault(); // next player or null default if we are the last player
             return string.IsNullOrEmpty(nextValue) ? firstValue : nextValue;
         }
 
         // Increment current dart on every throw
-        private static int NextDart (int currentDart) {             
-            switch (currentDart) {
+        private static int NextDart(int currentDart)
+        {
+            switch (currentDart)
+            {
                 case 1: return 2;
                 case 2: return 3;
                 default: return 1;
@@ -140,7 +151,8 @@ namespace Mth.Darts.Cricket
 
 
         // Helper method to generate all possible section states for a player' score
-        private List<GameScoreSectionState> InitGameScoreSectionStates () {
+        private List<GameScoreSectionState> InitGameScoreSectionStates()
+        {
             var list = new List<GameScoreSectionState>();
             list.Add(new GameScoreSectionState(Section.Bull, 0));
             list.Add(new GameScoreSectionState(Section.Twenty, 0));
@@ -150,6 +162,16 @@ namespace Mth.Darts.Cricket
             list.Add(new GameScoreSectionState(Section.Sixteen, 0));
             list.Add(new GameScoreSectionState(Section.Fifteen, 0));
             return list;
+        }
+        // Require cloning for keeping a snapshot of throws to facilitate rollback
+        // This snapshot is required because the scoring process is irreversible
+        public Game Clone()
+        {
+            return (Game)this.MemberwiseClone();
+        }
+        object ICloneable.Clone()
+        {
+            return this.Clone();
         }
     }
 }

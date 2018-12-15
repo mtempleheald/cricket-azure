@@ -13,7 +13,7 @@ namespace Mth.Darts.Cricket
         public int maxRounds {get; set;}
         public List<MatchScore> scores {get; set;}
         public Game currentGame {get; set;}
-        public List<Game> currentGameHistory {get; set;}
+        public Stack<Game> currentGameHistory {get; set;}
         public List<Game> previousGames {get; set;}
         
         // Construct a new match from scratch with an empty scoreboard
@@ -30,7 +30,7 @@ namespace Mth.Darts.Cricket
             // defer initial game creation to the Game class
             currentGame = new Game (players);
             // A new match will have no game history
-            currentGameHistory = new List<Game>();
+            currentGameHistory = new Stack<Game>();
             previousGames = new List<Game>();
         }
 
@@ -53,7 +53,7 @@ namespace Mth.Darts.Cricket
         // * non-MVP - Authentication & Authorisation check
         public Match Throw (Section? section = null, Bed? bed = null) {
             
-            currentGameHistory.Add(currentGame);
+            currentGameHistory.Push((Game)currentGame.Clone());
             currentGame.Throw(section, bed, scoringMode, maxRounds);
             
             return this;
@@ -67,6 +67,13 @@ namespace Mth.Darts.Cricket
                                orderby score.ranking descending
                                select score.player).ToList();
                 currentGame = new Game (players);
+            }
+            return this;
+        }
+
+        public Match UndoThrow () {
+            if (currentGameHistory.Any()) {
+                currentGame = currentGameHistory.Pop();
             }
             return this;
         }
