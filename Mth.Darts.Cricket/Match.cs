@@ -53,6 +53,7 @@ namespace Mth.Darts.Cricket
         // * non-MVP - Authentication & Authorisation check
         public Match Throw (Section? section = null, Bed? bed = null) {
             
+            currentGameHistory.Add(currentGame);
             currentGame.Throw(section, bed, scoringMode, maxRounds);
             
             return this;

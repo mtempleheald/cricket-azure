@@ -124,6 +124,15 @@ namespace Mth.Darts.Cricket.Tests
             Assert.True(match.currentGame.complete);
         }
 
+        [Fact]
+        public void ThrowDart_GameSnapshotTaken () {
+            Assert.Empty (match.currentGameHistory);
+            match.Throw (Section.Twenty, Bed.Treble);
+            Assert.Single (match.currentGameHistory);
+        }
+
+
+
         // Kind of redundant debugging aid, easier to use VS Code's default debugger tool
         private static void PrintCurrentGame (Match match) {
             foreach (GameScore score in match.currentGame.scores) {
