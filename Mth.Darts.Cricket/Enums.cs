@@ -3,9 +3,11 @@ using System;
 namespace Mth.Darts.Cricket
 {
 
-    // There are a fixed set of sections on a dartboard
-    // Cricket recognises this subset of sections
-    public enum Section {
+    /// <summary>
+    /// Section - A dartboard is made up of sections, the game of cricket recognises a subset of these
+    /// </summary>
+    public enum Section
+    {
         //None,
         Twenty = 20,
         Nineteen = 19,
@@ -15,20 +17,35 @@ namespace Mth.Darts.Cricket
         Fifteen = 15,
         Bull = 25
     }
-    // A dartboard splits each section into the following beds
-    // Note that Treble is not allowable for the Bull section
-    public enum Bed {
+    /// <summary>
+    /// Bed - Each section of a dartboard consists of up to 3 beds
+    /// Note that a Treble bed is not valid for the Bull section
+    /// </summary>
+    public enum Bed
+    {
         //None = 0,
         Single = 1,
         Double = 2,
         Treble = 3
     }
-    // Scoring Mode has a few possible values, enum is a natural fit
-    // The addition of a new mode will require new functionality
+    /// <summary>
+    /// ScoringMode - Cricket game scoring mode influences game logic
+    /// </summary>
     public enum ScoringMode
     {
         Standard,
         CutThroat
     };
+
+    /// <summary>
+    /// MatchGameScore - For a match with multiple games, score each game independently and total for overall scores and rankings
+    /// </summary>
+    internal enum MatchGameScore
+    {
+        First = 5,
+        Second = 3,
+        Third = 1,
+        Other = 0
+    }
 
 }

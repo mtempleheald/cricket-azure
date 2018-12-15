@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace Mth.Darts.Cricket
 {
+    /// <summary>
+    /// Game is responsible for controlling a darts cricket game, limited to game logic and current status.
+    /// Game is not exposed publicly, instead designed to operate within a public Match which it knows nothing about.
+    /// </summary>
     public sealed class Game : ICloneable
     {
         // Game Status
@@ -164,7 +168,7 @@ namespace Mth.Darts.Cricket
             return list;
         }
         // Require cloning for keeping a snapshot of throws to facilitate rollback
-        // This snapshot is required because the scoring process is irreversible
+        // This snapshot is required because the scoring process is irreversible and stateful
         public Game Clone()
         {
             return (Game)this.MemberwiseClone();

@@ -4,9 +4,11 @@ using System.Linq;
 
 namespace Mth.Darts.Cricket
 {
-    // We're after transience for a simple serverless design, take the data with us
-    // Cricket Match is the main object in our application logic containing all
-    // However most of the work happens within the current game    
+    /// <summary>
+    /// Match is responsible for controlling a darts cricket match which may last several games.
+    /// Match exposes all public endpoints, reports on current match scores and facilitates rollback.
+    /// Match is not responsible for game logic, this is deferred to Game.
+    /// </summary>
     public sealed class Match
     {
         public ScoringMode scoringMode {get; set;}
@@ -19,38 +21,29 @@ namespace Mth.Darts.Cricket
         // Construct a new match from scratch with an empty scoreboard
         public Match(List<String> players, ScoringMode scoringMode, int maxRounds)
         {
-            // Match Config
             this.scoringMode = scoringMode;
             this.maxRounds = maxRounds;
-            // Initialise empty scores for the match
+            
             scores = (
                 from player in players
                 select new MatchScore (player, 0, 0)
             ).ToList();
-            // defer initial game creation to the Game class
-            currentGame = new Game (players);
-            // A new match will have no game history
+            
+            currentGame = new Game (players);// defer initial game creation logic to the Game class
+            
             currentGameHistory = new Stack<Game>();
             previousGames = new List<Game>();
         }
 
-        // Construct a new match object by deserialising an existing match
+        // Construct a new match object by deserialising an existing match.
+        // Required when hosted in a stateless environment, e.g. Azure Functions.
         public Match () {
             // TODO
         }
 
-        // Throw method should trigger:
-        // * Increment current turn
-        // * Rotate players every 3 darts
-        // * Increment rounds every 3 * playerCount throws
-        // * Update game section states
-        // * Update game points
-        // * Update game rankings
-        // * Update game completion status
-        // * Update match points
-        // * Update match rankings
-        // * non-MVP - Data persistence
-        // * non-MVP - Authentication & Authorisation check
+        /// <summary>
+        /// Throw - entry point which triggers all game logic
+        /// </summary>
         public Match Throw (Section? section = null, Bed? bed = null) {
             
             currentGameHistory.Push((Game)currentGame.Clone());
@@ -58,10 +51,12 @@ namespace Mth.Darts.Cricket
             
             return this;
         }
-
+        /// <summary>
+        /// StartNewGame - Entry point for opting to continue the match after game completion.
+        /// </summary>
         public Match StartNewGame () {
-            // take snapshot of completed game and create a new game
             if (currentGame.complete) {
+                UpdateMatchPoints();
                 previousGames.Add(currentGame);
                 var players = (from score in currentGame.scores
                                orderby score.ranking descending
@@ -70,7 +65,9 @@ namespace Mth.Darts.Cricket
             }
             return this;
         }
-
+        /// <summary>
+        /// UndoThrow - Entry point for undoing the last throw and returning the previous game state.
+        /// </summary>
         public Match UndoThrow () {
             if (currentGameHistory.Any()) {
                 currentGame = currentGameHistory.Pop();
@@ -78,9 +75,16 @@ namespace Mth.Darts.Cricket
             return this;
         }
 
-        // Given the current state of the 
         private void UpdateMatchPoints() {
-            
+            scores = (from matchscore in scores
+                      join gamescore in currentGame.scores on matchscore.player equals gamescore.player
+                      select new MatchScore (matchscore.player
+                                            ,matchscore.points + gamescore.ranking==1 ? (int) MatchGameScore.First
+                                                               : gamescore.ranking==2 ? (int) MatchGameScore.Second
+                                                               : gamescore.ranking==3 ? (int) MatchGameScore.Third
+                                                               :  (int) MatchGameScore.Other
+                                            ,matchscore.ranking)
+                     ).ToList();
         }
         private void UpdateMatchRankings() {
 
