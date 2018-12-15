@@ -53,10 +53,11 @@ namespace Mth.Darts.Cricket
         }
         /// <summary>
         /// StartNewGame - Entry point for opting to continue the match after game completion.
+        /// Update match points and rankings, archive the current game and finally start a new game.
         /// </summary>
         public Match StartNewGame () {
             if (currentGame.complete) {
-                UpdateMatchPoints();
+                UpdateMatchScores();
                 previousGames.Add(currentGame);
                 var players = (from score in currentGame.scores
                                orderby score.ranking descending
@@ -75,23 +76,22 @@ namespace Mth.Darts.Cricket
             return this;
         }
 
-        private void UpdateMatchPoints() {
+        private void UpdateMatchScores() {
             scores = (from matchscore in scores
                       join gamescore in currentGame.scores on matchscore.player equals gamescore.player
-                      select new MatchScore (matchscore.player
-                                            ,matchscore.points + gamescore.ranking==1 ? (int) MatchGameScore.First
-                                                               : gamescore.ranking==2 ? (int) MatchGameScore.Second
-                                                               : gamescore.ranking==3 ? (int) MatchGameScore.Third
-                                                               :  (int) MatchGameScore.Other
-                                            ,matchscore.ranking)
-                     ).ToList();
+                      let newpoints = matchscore.points + gamescore.ranking==1 ? (int) MatchGameScore.First
+                                                        : gamescore.ranking==2 ? (int) MatchGameScore.Second
+                                                        : gamescore.ranking==3 ? (int) MatchGameScore.Third
+                                                        :                        (int) MatchGameScore.Other
+                      orderby newpoints descending
+                      select (player: matchscore.player, points: newpoints)
+                     ).ToList()
+                      .Select((s, i) => new MatchScore( player: s.player
+                                                      , points: s.points
+                                                      , ranking: i + 1))
+                      .OrderBy(s => s.ranking)
+                      .ToList();
         }
-        private void UpdateMatchRankings() {
 
-        }
-
-    }
-
-    
-    
+    }  
 }

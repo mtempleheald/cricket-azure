@@ -57,5 +57,13 @@ namespace Mth.Darts.Cricket.Tests
             Assert.Equal (pointsForSecond, match.scores[1].points);
         }
 
+        [Fact]
+        public void StartNewGame_MatchRankings_Updated () {
+            Assert.Equal (0, match.scores[0].ranking);
+            Assert.Equal (0, match.scores[1].ranking);
+            match.StartNewGame();
+            Assert.Equal (1, match.scores[0].ranking);
+            Assert.Equal (2, match.scores[1].ranking);
+        }
     }
 }
