@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Mth.Darts.Cricket
 {
-    public struct PlayerScore
+    public struct GameScore
     {
         internal String player {get; set;}
         internal int order {get; set;}
-        internal List<SectionState> states {get; set;}
+        internal List<GameScoreSectionState> states {get; set;}
         internal int points {get; set;}
         internal int ranking {get; set;}
-        internal PlayerScore(String player, int order, List<SectionState> states, int points = 0, int ranking = 0) : this()
+        internal GameScore(String player, int order, List<GameScoreSectionState> states, int points = 0, int ranking = 0) : this()
         {
             this.player = player;
             this.order = order;

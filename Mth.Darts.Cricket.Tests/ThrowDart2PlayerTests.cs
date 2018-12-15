@@ -64,16 +64,16 @@ namespace Mth.Darts.Cricket.Tests
         }
 
         [Fact]
-        public void ThrowDart_SectionStates_Updated() {
+        public void ThrowDart_GameScoreSectionStates_Updated() {
             
             match.Throw (Section.Twenty, Bed.Treble);
 
             var countTwenties = (
-                from playerScore in match.currentGame.scores
-                where playerScore.player == match.currentGame.currentPlayer
-                from sectionStates in playerScore.states
-                where sectionStates.section == Section.Twenty
-                select sectionStates.count
+                from GameScore in match.currentGame.scores
+                where GameScore.player == match.currentGame.currentPlayer
+                from GameScoreSectionStates in GameScore.states
+                where GameScoreSectionStates.section == Section.Twenty
+                select GameScoreSectionStates.count
             ).First();
 
             Assert.Equal (3, countTwenties);
@@ -125,10 +125,10 @@ namespace Mth.Darts.Cricket.Tests
         }
 
         private static void PrintCurrentGame (Match match) {
-            foreach (PlayerScore score in match.currentGame.scores) {
+            foreach (GameScore score in match.currentGame.scores) {
                 Console.WriteLine("Score for player {0}, order {1}, points {2}, ranking {3}", score.player, score.order, score.points, score.ranking);
                 var ss = "{";
-                foreach (SectionState state in score.states) {
+                foreach (GameScoreSectionState state in score.states) {
                     ss = String.Format("{0} ({1}, {2}),", ss, state.section, state.count);
                 }
                 Console.WriteLine("Section state {0}", ss);

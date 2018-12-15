@@ -11,7 +11,7 @@ namespace Mth.Darts.Cricket
         internal int currentRound {get; set;}
         internal Boolean complete {get; set;}
         // Scores
-        public List<PlayerScore> scores {get; set;}
+        public List<GameScore> scores {get; set;}
         
         public Game (List<String> players) {
 
@@ -22,7 +22,7 @@ namespace Mth.Darts.Cricket
 
             scores = players.AsEnumerable()
                     .Select((player, index) => 
-                        new PlayerScore (player, index, InitSectionStates())
+                        new GameScore (player, index, InitGameScoreSectionStates())
                     ).ToList();
 
         }
@@ -83,11 +83,11 @@ namespace Mth.Darts.Cricket
             scores = (
                 from score in scores
                 select score.player == currentPlayer 
-                    ? new PlayerScore (score.player
+                    ? new GameScore (score.player
                                       ,score.order
                                       ,(from state in score.states
                                         select state.section == section
-                                        ? new SectionState (state.section
+                                        ? new GameScoreSectionState (state.section
                                                            ,state.count + (int) bed > 3
                                                             ? 3
                                                             : state.count + (int) bed)
@@ -95,7 +95,7 @@ namespace Mth.Darts.Cricket
                                        ).ToList()
                                       ,(scoringMode == ScoringMode.Standard) ? score.points + pointsScored : score.points
                                       ,score.ranking)
-                    : new PlayerScore (score.player
+                    : new GameScore (score.player
                                       ,score.order
                                       ,score.states
                                       ,points: (scoringMode == ScoringMode.CutThroat) ? score.points + pointsScored : score.points 
@@ -112,7 +112,7 @@ namespace Mth.Darts.Cricket
                 orderby effectivePoints descending
                 select score
             )//.ToList()
-            .Select((s, i) => new PlayerScore (s.player
+            .Select((s, i) => new GameScore (s.player
                                        ,s.order
                                        ,s.states
                                        ,s.points
@@ -140,15 +140,15 @@ namespace Mth.Darts.Cricket
 
 
         // Helper method to generate all possible section states for a player' score
-        private List<SectionState> InitSectionStates () {
-            var list = new List<SectionState>();
-            list.Add(new SectionState(Section.Bull, 0));
-            list.Add(new SectionState(Section.Twenty, 0));
-            list.Add(new SectionState(Section.Nineteen, 0));
-            list.Add(new SectionState(Section.Eighteen, 0));
-            list.Add(new SectionState(Section.Seventeen, 0));
-            list.Add(new SectionState(Section.Sixteen, 0));
-            list.Add(new SectionState(Section.Fifteen, 0));
+        private List<GameScoreSectionState> InitGameScoreSectionStates () {
+            var list = new List<GameScoreSectionState>();
+            list.Add(new GameScoreSectionState(Section.Bull, 0));
+            list.Add(new GameScoreSectionState(Section.Twenty, 0));
+            list.Add(new GameScoreSectionState(Section.Nineteen, 0));
+            list.Add(new GameScoreSectionState(Section.Eighteen, 0));
+            list.Add(new GameScoreSectionState(Section.Seventeen, 0));
+            list.Add(new GameScoreSectionState(Section.Sixteen, 0));
+            list.Add(new GameScoreSectionState(Section.Fifteen, 0));
             return list;
         }
     }
