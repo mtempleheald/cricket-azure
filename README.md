@@ -41,7 +41,7 @@ Game logic can be split into 2 distinct parts:
 
 # Application Architecture
 
-3 key triggers:
+key triggers:
 * create match
     * requires list of players
     * returns new match, initialised with zero scores/ hits
@@ -50,6 +50,9 @@ Game logic can be split into 2 distinct parts:
     * returns updated match state
 * undo throw
     * requires current match state including history of throws
+    * returns updated match state
+* start new game
+    * requires current match state with current game marked as complete
     * returns updated match state
 
 ## Frontend

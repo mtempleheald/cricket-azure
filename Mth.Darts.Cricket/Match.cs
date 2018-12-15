@@ -58,6 +58,18 @@ namespace Mth.Darts.Cricket
             return this;
         }
 
+        public Match StartNewGame () {
+            // take snapshot of completed game and create a new game
+            if (currentGame.complete) {
+                previousGames.Add(currentGame);
+                var players = (from score in currentGame.scores
+                               orderby score.ranking descending
+                               select score.player).ToList();
+                currentGame = new Game (players);
+            }
+            return this;
+        }
+
         // Given the current state of the 
         private void UpdateMatchPoints() {
             

@@ -124,6 +124,7 @@ namespace Mth.Darts.Cricket.Tests
             Assert.True(match.currentGame.complete);
         }
 
+        // Kind of redundant debugging aid, easier to use VS Code's default debugger tool
         private static void PrintCurrentGame (Match match) {
             foreach (GameScore score in match.currentGame.scores) {
                 Console.WriteLine("Score for player {0}, order {1}, points {2}, ranking {3}", score.player, score.order, score.points, score.ranking);
