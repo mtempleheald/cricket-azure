@@ -13,11 +13,14 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build .\Mth.Darts.Cricket\ --configuration $(buildConfiguration)
+- script: dotnet build 'Mth.Darts.Cricket' --configuration $(buildConfiguration)
   displayName: 'Build Cricket library'
-- script: dotnet build .\Mth.Darts.Cricket.Tests\ --configuration $(buildConfiguration)
+- script: dotnet build 'Mth.Darts.Cricket.Tests' --configuration $(buildConfiguration)
   displayName: 'Build Cricket library tests'
-- script: dotnet test .\Mth.Darts.Cricket.Tests\
-  displayName: 'Run unit tests (xUnit)'
-- script: dotnet build .\Mth.Darts.Cricket.Api\ --configuration $(buildConfiguration)
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '*.Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+- script: dotnet build 'Mth.Darts.Cricket.Api' --configuration $(buildConfiguration)
   displayName: 'Build Cricket API (Azure Function App)'
