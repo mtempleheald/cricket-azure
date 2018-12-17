@@ -10,6 +10,7 @@ Hitting a number which you've already completed but others haven't scores you th
 The winner is the first to complete this checklist and also have the best score overall.  
 
 | Player   | Bull | 20  | 19  | 18  | 17  | 16  | 15  | Points | Ranking |
+| -------- | ---- | --- | --- | --- | --- | --- | --- | ------ | ------- |
 | Player 1 | XXX  | XXX | XXX | XXX | XXX | XXX | XXX | 0      | 1       |
 | Player 2 | XXX  | XXX | XXX | XXX | XXX | XXX | XXX | 100    | 2       | 
 

@@ -17,8 +17,10 @@ namespace Mth.Darts.Cricket
         public Game currentGame {get; set;}
         public Stack<Game> currentGameHistory {get; set;}
         public List<Game> previousGames {get; set;}
-        
-        // Construct a new match from scratch with an empty scoreboard
+
+        /// <summary>
+        /// Start a new match from scratch with an empty scoreboard
+        /// </summary>
         public Match(List<String> players, ScoringMode scoringMode, int maxRounds)
         {
             this.scoringMode = scoringMode;
@@ -34,9 +36,11 @@ namespace Mth.Darts.Cricket
             currentGameHistory = new Stack<Game>();
             previousGames = new List<Game>();
         }
-
-        // Construct a new match object by deserialising an existing match.
-        // Required when hosted in a stateless environment, e.g. Azure Functions.
+        
+        /// <summary>
+        /// Start a new match by deserialising an existing match.static
+        /// Required when hosted in a stateless environment, e.g. Azure Functions.
+        /// </summary>
         public Match () {
             // TODO
         }
@@ -51,6 +55,7 @@ namespace Mth.Darts.Cricket
             
             return this;
         }
+        
         /// <summary>
         /// StartNewGame - Entry point for opting to continue the match after game completion.
         /// Update match points and rankings, archive the current game and finally start a new game.
@@ -66,6 +71,7 @@ namespace Mth.Darts.Cricket
             }
             return this;
         }
+        
         /// <summary>
         /// UndoThrow - Entry point for undoing the last throw and returning the previous game state.
         /// </summary>
@@ -75,7 +81,7 @@ namespace Mth.Darts.Cricket
             }
             return this;
         }
-
+        
         private void UpdateMatchScores() {
             scores = (from matchscore in scores
                       join gamescore in currentGame.scores on matchscore.player equals gamescore.player
