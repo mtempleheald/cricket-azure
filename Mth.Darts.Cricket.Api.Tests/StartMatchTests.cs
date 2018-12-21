@@ -15,7 +15,7 @@ namespace Mth.Darts.Cricket.Api.Tests
         [Fact]
         public async void TwoPlayerMatch_Success()
         {
-            var expected = File.ReadAllText(@"testData\TwoPlayerMatch_Expected.json");
+            var expected = File.ReadAllText(@"testData/TwoPlayerMatch_Expected.json");
 
             Dictionary<string, StringValues> reqParams = new Dictionary<string, StringValues>();
             reqParams.Add("scoring_mode", new StringValues("Standard"));
