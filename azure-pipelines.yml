@@ -13,14 +13,19 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- script: dotnet --version
+  displayName: 'Get agent dotnet version'
 - script: dotnet build 'Mth.Darts.Cricket' --configuration $(buildConfiguration)
   displayName: 'Build Cricket library'
 - script: dotnet build 'Mth.Darts.Cricket.Tests' --configuration $(buildConfiguration)
   displayName: 'Build Cricket library tests'
+- script: dotnet build 'Mth.Darts.Cricket.Api' --configuration $(buildConfiguration)
+  displayName: 'Build Cricket API (Azure Function App)'
+- script: dotnet build 'Mth.Darts.Cricket.Api.Tests' --configuration $(buildConfiguration)
+  displayName: 'Build Cricket API tests'
 - task: DotNetCoreCLI@2
   inputs:
     command: test
     projects: '*.Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-- script: dotnet build 'Mth.Darts.Cricket.Api' --configuration $(buildConfiguration)
-  displayName: 'Build Cricket API (Azure Function App)'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
