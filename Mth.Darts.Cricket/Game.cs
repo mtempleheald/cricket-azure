@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Mth.Darts.Cricket
 {
@@ -10,15 +11,19 @@ namespace Mth.Darts.Cricket
     /// </summary>
     public sealed class Game : ICloneable
     {
-        // Game Status
+        [JsonProperty()]
         internal String currentPlayer { get; set; }
+        [JsonProperty()]
         internal int currentDart { get; set; }
+        [JsonProperty()]
         internal int currentRound { get; set; }
+        [JsonProperty()]
         internal Boolean complete { get; set; }
+        [JsonProperty()]
         // Scores
-        public List<GameScore> scores { get; set; }
+        internal List<GameScore> scores { get; set; }
 
-        public Game(List<String> players)
+        internal Game(List<String> players)
         {
 
             this.currentPlayer = players.First();
@@ -169,7 +174,7 @@ namespace Mth.Darts.Cricket
         }
         // Require cloning for keeping a snapshot of throws to facilitate rollback
         // This snapshot is required because the scoring process is irreversible and stateful
-        public Game Clone()
+        internal Game Clone()
         {
             return (Game)this.MemberwiseClone();
         }

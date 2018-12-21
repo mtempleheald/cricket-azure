@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace Mth.Darts.Cricket
 {
@@ -6,7 +7,9 @@ namespace Mth.Darts.Cricket
     // It is defined by its data so a struct is a natural fit
     public struct GameScoreSectionState
     {
+        [JsonProperty()]
         internal Section section {get; set;}
+        [JsonProperty()]
         internal int count {get; set;}
         internal GameScoreSectionState(Section section, int count) : this()
         {
