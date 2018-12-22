@@ -40,15 +40,15 @@ steps:
     projects: '$(serviceNamespace).Api.Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
   displayName: 'Test API'
-- script: dotnet publish '$(serviceNamespace).Api' --output $(Build.ArtifactStagingDirectory)/$(functionAppName)
+- script: dotnet publish '$(serviceNamespace).Api' --output '../FunctionApp'
   displayName: 'Prepare Build artifacts'
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/ArchiveFilesV2/task.json
 - task: ArchiveFiles@2
   inputs: 
-    rootFolderOrFile: 
-    includeRootFolder: true
+    rootFolderOrFile: 'FunctionApp'
+    includeRootFolder: true # https://docs.microsoft.com/en-us/azure/azure-functions/functions-continuous-deployment#continuous-deployment-requirements
     archiveType: zip
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' # Default, but clearer to include anyway
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' # Default, but clearer to include here anyway
     replaceExistingArchive: true
   displayName: 'Zip up function app artifacts'
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/CopyFilesV2/task.json
@@ -62,7 +62,7 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: 'drop'
+    artifactName: 'drop' # 1 drop artifact should contain both the zipped functionapp and the ARM template
     artifactType: Azure Pipelines/TFS # For Linux agent File Share is not supported
     TargetPath: ''
   displayName: 'Publish Build artifacts'
