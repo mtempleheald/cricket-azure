@@ -11,28 +11,43 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  functionAppName: 'mthcricket01api'
+  serviceNamespace: 'Mth.Darts.Cricket'
 
 steps:
 - script: dotnet --version
   displayName: 'Get agent dotnet version'
-- script: dotnet build 'Mth.Darts.Cricket' --configuration $(buildConfiguration)
-  displayName: 'Build Cricket library'
-- script: dotnet build 'Mth.Darts.Cricket.Tests' --configuration $(buildConfiguration)
-  displayName: 'Build Cricket library tests'
+# - task: DotNetCoreInstaller@0
+#   inputs:
+#     version: '2.2.101'
+- script: dotnet build '$(serviceNamespace)' --configuration $(buildConfiguration)
+  displayName: 'Build Service (Class Library)'
+- script: dotnet build '$(serviceNamespace).Tests' --configuration $(buildConfiguration)
+  displayName: 'Build Service tests'
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: 'Mth.Darts.Cricket.Tests/Mth.Darts.Cricket.Tests.csproj'
+    projects: '$(serviceNamespace).Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-  displayName: 'Test Cricket Library'
-- script: dotnet build 'Mth.Darts.Cricket.Api' --configuration $(buildConfiguration)
-  displayName: 'Build Cricket API (Azure Function App)'
-- script: dotnet build 'Mth.Darts.Cricket.Api.Tests' --configuration $(buildConfiguration)
-  displayName: 'Build Cricket API tests'
+  displayName: 'Test Service'
+- script: dotnet build '$(serviceNamespace).Api' --configuration $(buildConfiguration)
+  displayName: 'Build API (Azure Function App)'
+- script: dotnet build '$(serviceNamespace).Api.Tests' --configuration $(buildConfiguration)
+  displayName: 'Build API tests'
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: 'Mth.Darts.Cricket.Api.Tests/Mth.Darts.Cricket.Api.Tests.csproj'
+    projects: '$(serviceNamespace).Api.Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-  displayName: 'Test Cricket API'
-
+  displayName: 'Test API'
+- script: dotnet publish '$(serviceNamespace).Api' --output $(Build.ArtifactStagingDirectory)/$(functionAppName)
+  displayName: 'Publish Build artifacts'
+- task: PublishBuildArtifacts@1 # To be replaced by PublishPipelineArtifact early 2019
+  inputs:
+    pathtoPublish: $(Build.ArtifactStagingDirectory)
+    artifactName: $(functionAppName)
+    artifactType: filepath
+# - task: PublishPipelineArtifact@0
+#   inputs:
+#     artifactName: CricketApi
+#     targetPath: ./$(serviceNamespace).Api
