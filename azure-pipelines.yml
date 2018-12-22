@@ -41,13 +41,32 @@ steps:
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
   displayName: 'Test API'
 - script: dotnet publish '$(serviceNamespace).Api' --output $(Build.ArtifactStagingDirectory)/$(functionAppName)
-  displayName: 'Publish Build artifacts'
-- task: PublishBuildArtifacts@1 # To be replaced by PublishPipelineArtifact early 2019
+  displayName: 'Prepare Build artifacts'
+# https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/ArchiveFilesV2/task.json
+- task: ArchiveFiles@2
+  inputs: 
+    rootFolderOrFile: 
+    includeRootFolder: true
+    archiveType: zip
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' # Default, but clearer to include anyway
+    replaceExistingArchive: true
+  displayName: 'Zip up function app artifacts'
+# https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/CopyFilesV2/task.json
+- task: CopyFiles@2
+  inputs:
+    Contents: 'azuredeploy*.json'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+# https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/PublishBuildArtifactsV1/task.json
+# To be replaced by PublishPipelineArtifact early 2019
+- task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: $(Build.ArtifactStagingDirectory)
-    artifactName: $(functionAppName)
-    artifactType: filepath
+    artifactName: '$(functionAppName)'
+    artifactType: Azure Pipelines/TFS # For Linux agent File Share not supported
+    TargetPath: ''
+  displayName: 'Publish Build artifacts'
+# https://github.com/Microsoft/azure-pipelines-tasks/tree/master/Tasks/PublishPipelineArtifactV0
 # - task: PublishPipelineArtifact@0
 #   inputs:
-#     artifactName: CricketApi
-#     targetPath: ./$(serviceNamespace).Api
+#     artifactName: '$(functionAppName)'
+#     targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
