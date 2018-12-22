@@ -13,6 +13,7 @@ variables:
   buildConfiguration: 'Release'
   functionAppName: 'mthcricket01api'
   serviceNamespace: 'Mth.Darts.Cricket'
+  system.debug: true
 
 steps:
 - script: dotnet --version
