@@ -56,13 +56,14 @@ steps:
   inputs:
     Contents: 'azuredeploy*.json'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy ARM templates'
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/PublishBuildArtifactsV1/task.json
 # To be replaced by PublishPipelineArtifact early 2019
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: $(Build.ArtifactStagingDirectory)
-    artifactName: '$(functionAppName)'
-    artifactType: Azure Pipelines/TFS # For Linux agent File Share not supported
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'
+    artifactType: Azure Pipelines/TFS # For Linux agent File Share is not supported
     TargetPath: ''
   displayName: 'Publish Build artifacts'
 # https://github.com/Microsoft/azure-pipelines-tasks/tree/master/Tasks/PublishPipelineArtifactV0
