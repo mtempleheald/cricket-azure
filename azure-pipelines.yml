@@ -55,15 +55,20 @@ steps:
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/CopyFilesV2/task.json
 - task: CopyFiles@2
   inputs:
-    Contents: 'azuredeploy*.json'
+    Contents: 'FunctionApp/**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/FunctionApp'
+  displayName: 'Copy published API files'
+- task: CopyFiles@2
+  inputs:
+    Contents: 'azuredeploy.json'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Copy ARM templates'
+  displayName: 'Copy ARM template files'
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/PublishBuildArtifactsV1/task.json
 # To be replaced by PublishPipelineArtifact early 2019
 - task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: 'drop' # 1 drop artifact should contain both the zipped functionapp and the ARM template
+    artifactName: 'drop' # 1 drop artifact should contain both the functionapp and the ARM template
     artifactType: 'Container' # For Linux agent File Share is not supported
     TargetPath: '$(System.ArtifactsDirectory)'
   displayName: 'Publish Build artifacts'
