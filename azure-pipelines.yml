@@ -47,7 +47,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     Contents: 'Mth.Darts.Cricket.Api.Release/**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/Mth.Darts.Cricket.Api.Release'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy published API files'
 - task: CopyFiles@2
   inputs:
