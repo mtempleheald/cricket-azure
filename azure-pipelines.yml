@@ -41,13 +41,13 @@ steps:
     projects: '$(serviceNamespace).Api.Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
   displayName: 'Test API'
-- script: dotnet publish '$(serviceNamespace).Api' --output '../FunctionApp'
+- script: dotnet publish '$(serviceNamespace).Api' --output '../Mth.Darts.Cricket.Api.Release'
   displayName: 'Prepare Build artifacts'
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/CopyFilesV2/task.json
 - task: CopyFiles@2
   inputs:
-    Contents: 'FunctionApp/**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/FunctionApp'
+    Contents: 'Mth.Darts.Cricket.Api.Release/**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/Mth.Darts.Cricket.Api.Release'
   displayName: 'Copy published API files'
 - task: CopyFiles@2
   inputs:
