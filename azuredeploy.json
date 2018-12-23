@@ -82,15 +82,15 @@
                     "appSettings": [
                         {
                             "name": "AzureWebJobsStorage",
-                            "value": "[Concat('DefaultEndpointsProtocol=https;AccountName=',variables('functionapp_storageaccount_name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionapp_storageaccount_name')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value), ';EndpointSuffix=core.windows.net']"
+                            "value": "[Concat('DefaultEndpointsProtocol=https;AccountName=',variables('functionapp_storageaccount_name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionapp_storageaccount_name')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net')]"
                         },
                         {
                             "name": "AzureWebJobsDashboard",
-                            "value": "[Concat('DefaultEndpointsProtocol=https;AccountName=',variables('functionapp_storageaccount_name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionapp_storageaccount_name')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value), ';EndpointSuffix=core.windows.net']"
+                            "value": "[Concat('DefaultEndpointsProtocol=https;AccountName=',variables('functionapp_storageaccount_name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionapp_storageaccount_name')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net']"
                         },
                         {
                             "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-                            "value": "[Concat('DefaultEndpointsProtocol=https;AccountName=',variables('functionapp_storageaccount_name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionapp_storageaccount_name')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value), ';EndpointSuffix=core.windows.net']"
+                            "value": "[Concat('DefaultEndpointsProtocol=https;AccountName=',variables('functionapp_storageaccount_name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionapp_storageaccount_name')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net']"
                         },
                         {
                             "name": "WEBSITE_CONTENTSHARE",
