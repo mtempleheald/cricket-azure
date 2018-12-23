@@ -65,7 +65,7 @@ steps:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: 'drop' # 1 drop artifact should contain both the zipped functionapp and the ARM template
     artifactType: Azure Pipelines/TFS # For Linux agent File Share is not supported
-    TargetPath: ''
+    TargetPath: '$(System.ArtifactsDirectory)'
   displayName: 'Publish Build artifacts'
 # https://github.com/Microsoft/azure-pipelines-tasks/tree/master/Tasks/PublishPipelineArtifactV0
 # - task: PublishPipelineArtifact@0
