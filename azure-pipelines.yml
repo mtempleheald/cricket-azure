@@ -29,7 +29,7 @@ steps:
   inputs:
     command: test
     projects: '$(serviceNamespace).Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --testRunTitle "VSTest Service Test Run"'
   displayName: 'Test Service'
 - script: dotnet build '$(serviceNamespace).Api' --configuration $(buildConfiguration)
   displayName: 'Build API (Azure Function App)'
@@ -39,10 +39,19 @@ steps:
   inputs:
     command: test
     projects: '$(serviceNamespace).Api.Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --testRunTitle "VSTest API Test Run"'
   displayName: 'Test API'
-- script: dotnet publish '$(serviceNamespace).Api' --output '../Mth.Darts.Cricket.Api.Release'
+- script: dotnet publish '$(serviceNamespace).Api' --output '../$(serviceNamespace).Api.Release'
   displayName: 'Prepare Build artifacts'
+# https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/ArchiveFilesV2/task.json
+- task: ArchiveFiles@2
+  inputs: 
+    rootFolderOrFile: '$(serviceNamespace).Api.Release'
+    includeRootFolder: false # https://docs.microsoft.com/en-us/azure/azure-functions/functions-continuous-deployment#continuous-deployment-requirements
+    archiveType: zip
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(serviceNamespace).Api.Release.zip' # Default, but clearer to include here anyway
+    replaceExistingArchive: true
+  displayName: 'Zip up function app artifacts'
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/CopyFilesV2/task.json
 - task: CopyFiles@2
   inputs:
