@@ -55,11 +55,6 @@ steps:
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/CopyFilesV2/task.json
 - task: CopyFiles@2
   inputs:
-    Contents: 'Mth.Darts.Cricket.Api.Release/**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Copy published API files'
-- task: CopyFiles@2
-  inputs:
     Contents: 'azuredeploy.json'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy ARM template files'
