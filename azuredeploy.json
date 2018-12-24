@@ -29,7 +29,7 @@
         "functionapp_appInsightsName": "[variables('functionapp_name')]",
         "functionapp_storageaccount_name": "[concat(resourceGroup().name, 'apistorage')]",
         "functionapp_storageaccount_type": "Standard LRS",
-        "functionapp_storageaccount_id": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('functionapp_storageaccount_name'))]",        
+        "functionapp_storageaccount_id": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('functionapp_storageaccount_name'))]",
         "static_storageaccount_name": "[concat(resourceGroup().name, 'uistorage')]",
         "functionapp_insights_name": "[variables('functionapp_name')]"
     },
@@ -68,8 +68,8 @@
         {
             "name": "[variables('functionapp_name')]",
             "type": "Microsoft.Web/sites",
-            "kind": "functionapp",
-            "apiVersion": "2018-11-01",
+            "kind": "functionapp,linux",
+            "apiVersion": "2018-02-01",
             "comments": "api_url https://docs.microsoft.com/en-us/azure/templates/microsoft.web/2018-02-01/sites",
             "location": "[parameters('location')]",
             "tags": {},
@@ -80,7 +80,7 @@
                 ],
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('functionapp_hostingplan_name'))]",
                 "siteConfig": {
-                    "appSettings": [                        
+                    "appSettings": [
                         {
                             "name": "AzureWebJobsStorage",
                             "value": "[Concat('DefaultEndpointsProtocol=https;AccountName=',variables('functionapp_storageaccount_name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('functionapp_storageaccount_name')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net')]"
@@ -121,12 +121,12 @@
             "comments": "api_url https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2015-05-01/components",
             "location": "[parameters('location')]",
             "tags": {
-              "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', variables('functionapp_insights_name'))]": "Resource"
+                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', variables('functionapp_insights_name'))]": "Resource"
             },
             "properties": {
-              "Application_Type": "web"
+                "Application_Type": "web"
             }
-      }
+        }
     ],
     "outputs": {
         "functionapp_name": {
