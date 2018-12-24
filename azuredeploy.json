@@ -105,6 +105,14 @@
                             "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                             "value": "[reference(resourceId('Microsoft.Insights/components/', variables('functionapp_insights_name')), providers('Microsoft.Insights', 'components').apiVersions[0]).InstrumentationKey]"
                         }
+                    ],
+                    "virtualApplications": [
+                        {
+                            "virtualPath": "/",
+                            "physicalPath": "site\\wwwroot",
+                            "preloadEnabled": false,
+                            "virtualDirectories": null
+                        }
                     ]
                 }
             },
