@@ -29,7 +29,7 @@ steps:
   inputs:
     command: test
     projects: '$(serviceNamespace).Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --testRunTitle "VSTest Service Test Run"'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
   displayName: 'Test Service'
 - script: dotnet build '$(serviceNamespace).Api' --configuration $(buildConfiguration)
   displayName: 'Build API (Azure Function App)'
@@ -39,7 +39,7 @@ steps:
   inputs:
     command: test
     projects: '$(serviceNamespace).Api.Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --testRunTitle "VSTest API Test Run"'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
   displayName: 'Test API'
 - script: dotnet publish '$(serviceNamespace).Api' --output '../$(serviceNamespace).Api.Release'
   displayName: 'Prepare Build artifacts'
