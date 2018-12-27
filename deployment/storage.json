@@ -46,7 +46,7 @@
     "outputs": {
         "Key": {
             "type": "object",
-            "value": "[listKeys(parameters('Name'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value"
+            "value": "[listKeys(parameters('Name'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
         }
     }
 }
