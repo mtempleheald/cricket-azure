@@ -110,7 +110,8 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms', variables('functionapp_hostingplan_name'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('functionapp_storageaccount_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('functionapp_storageaccount_name'))]",
+                "[resourceId('Microsoft.Insights/components', variables('functionapp_insights_name'))]"
             ]
         },
         {
