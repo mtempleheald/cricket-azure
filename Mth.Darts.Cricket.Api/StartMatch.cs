@@ -18,7 +18,7 @@ namespace Mth.Darts.Cricket.Api
             [HttpTrigger(AuthorizationLevel.Anonymous , "POST", Route = "matches")] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("StartMatch triggered.  RequestUri={req.RequestUri}");
+            //log.LogInformation("StartMatch triggered.  RequestUri={req.RequestUri}");
             
             ScoringMode scoringMode;
             Enum.TryParse(req.Query["scoring_mode"], out scoringMode);
@@ -29,7 +29,7 @@ namespace Mth.Darts.Cricket.Api
             var json = JsonConvert.SerializeObject (match, Formatting.Indented);
 
             dynamic body = await req.ReadAsStringAsync(); // Microsoft.Azure.WebJobs.Extensions.Http;
-            log.LogInformation($"Request body: {body}");
+            //log.LogInformation($"Request body: {body}");
 
             return (ActionResult)new OkObjectResult(json);
         }
