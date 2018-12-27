@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Location": {
+            "type": "string"
+        },
+        "Type": {
+            "type": "string"
+        },
+        "Name": {
+            "type": "string"
+        },
+        "Purpose": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('Name')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "kind": "Storage",
+            "apiVersion": "2018-07-01",
+            "comments": "api_url https://docs.microsoft.com/en-us/azure/templates/microsoft.storage/2018-07-01/storageaccounts",
+            "location": "[parameters('Location')]",
+            "tags": {
+                "purpose": "[parameters('Purpose')]"
+            },
+            "sku": {
+                "name": "[parameters('Type')]"
+            },
+            "properties": {
+                "encryption": {
+                    "keySource": "Microsoft.Storage",
+                    "services": {
+                        "blob": {
+                            "enabled": true
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "Key": {
+            "type": "object",
+            "value": "[listKeys(parameters('Name'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value"
+        }
+    }
+}

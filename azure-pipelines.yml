@@ -55,7 +55,7 @@ steps:
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/CopyFilesV2/task.json
 - task: CopyFiles@2
   inputs:
-    Contents: 'azuredeploy.json'
+    Contents: 'deployment/*.json'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy ARM template files'
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/PublishBuildArtifactsV1/task.json

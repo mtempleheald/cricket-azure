@@ -1,0 +1,96 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Location": {
+            "type": "string"
+        },
+        "FunctionAppName": {
+            "type": "string"
+        },
+        "FunctionsExtensionVersion": {
+            "type": "string"
+        },
+        "FunctionsWorkerRuntime": {
+            "type": "string"
+        },
+        "StorageAccountConnectionString": {
+            "type": "string"
+        },
+        "AppInsightsKey": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "planName": "[concat(parameters('FunctionAppName'), 'plan')]"
+    },
+    "resources": [
+        {
+            "name": "[variables('planName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "kind": "functionapp",
+            "apiVersion": "2018-02-01",
+            "comments": "api_url https://docs.microsoft.com/en-us/azure/templates/microsoft.web/2018-02-01/serverfarms",
+            "location": "[parameters('Location')]",
+            "tags": {},
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "properties": {
+                "name": "[parameters('FunctionAppName')]"
+            }
+        },
+        {
+            "name": "[parameters('FunctionAppName')]",
+            "type": "Microsoft.Web/sites",
+            "kind": "functionapp,linux",
+            "apiVersion": "2018-02-01",
+            "comments": "api_url https://docs.microsoft.com/en-us/azure/templates/microsoft.web/2018-02-01/sites",
+            "location": "[parameters('Location')]",
+            "tags": {},
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {}
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('FunctionAppName'))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[parameters('StorageAccountConnectionString')]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "[parameters('FunctionsExtensionVersion')]"
+                        },
+                        {
+                            "name": "FUNCTIONS_WORKER_RUNTIME",
+                            "value": "[parameters('FunctionsWorkerRuntime')]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                            "value": "[parameters('StorageAccountConnectionString')]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTSHARE",
+                            "value": "[parameters('FunctionAppName')]"
+                        },
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[parameters('AppInsightsKey')]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('planName'))]"
+            ]
+        }
+    ],
+    "outputs": {}
+}

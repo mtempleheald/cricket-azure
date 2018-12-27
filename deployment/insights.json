@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Location": {
+            "type": "string"
+        },
+        "Name": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('Name')]",
+            "type": "Microsoft.Insights/components",
+            "kind": "web",
+            "apiVersion": "2015-05-01",
+            "comments": "api_url https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2015-05-01/components",
+            "location": "[parameters('Location')]",
+            "tags": {},
+            "properties": {
+                "Application_Type": "web"
+            }
+        }
+    ],
+    "outputs": {
+        "Key": {
+            "type": "object",
+            "value": "[reference(resourceId('Microsoft.Insights/components/', parameters('Name')), providers('Microsoft.Insights', 'components').apiVersions[0]).InstrumentationKey]"
+        }
+    }
+}
