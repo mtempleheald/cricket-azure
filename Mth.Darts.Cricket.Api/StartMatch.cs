@@ -15,7 +15,7 @@ namespace Mth.Darts.Cricket.Api
     {
         [FunctionName("StartMatch")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "POST", Route = "matches")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous , "POST", Route = "matches")] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("StartMatch triggered.  RequestUri={req.RequestUri}");
