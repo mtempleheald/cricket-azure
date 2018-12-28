@@ -1,0 +1,136 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "StorageAccountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS",
+                "Premium_LRS"
+            ],
+            "metadata": {
+                "description": "Storage Account type"
+            }
+        },
+        "Environmentironment": {
+            "type": "string",
+            "defaultValue": "PRD",
+            "allowedValues": [
+                "PRD"
+            ]
+        }
+    },
+    "variables": {
+        "ApplicationName": "[resourceGroup().name]",
+        "NestedTemplateDir": "https://raw.githubusercontent.com/mtempleheald/cricket-azure/master/deployment/",
+        "DeploymentDebugDetailLevel": "requestContent, responseContent",
+        "Environment": "[variables(concat(parameters('Environmentironment'),'Environment'))]",
+        "PRDEnvironment": {
+            "ApiStorage": {
+                "Deploy": "True",
+                "TemplateUri": "[uri(variables('NestedTemplateDir'), 'storage.json')]",
+                "Location": "[parameters('Location')]",
+                "Type": "Standard_LRS",
+                "Name": "[concat(variables('ApplicationName'), 'apistorage')]",
+                "Purpose": "Azure functions require storage for source code, logging, diagnostics"
+            },
+            "AppInsights": {
+                "Deploy": "True",
+                "TemplateUri": "[uri(variables('NestedTemplateDir'), 'insights.json')]",
+                "Location": "[parameters('Location')]",
+                "Name": "[concat(variables('ApplicationName'), 'apiinsights')]"
+            },
+            "FunctionApp": {
+                "Deploy": "True",
+                "TemplateUri": "[uri(variables('NestedTemplateDir'), 'functionapp.json')]",
+                "Location": "[parameters('Location')]",
+                "FunctionAppName": "[concat(variables('ApplicationName'), 'api')]",
+                "FunctionsExtensionVersion": "~2",
+                "FunctionsWorkerRuntime": "dotnet"
+            }
+        }
+    },
+    "resources": [
+        {
+            "condition": "[equals(variables('Environment').ApiStorage.Deploy, 'True')]",
+            "name": "ApiStorageDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('Environment').ApiStorage.TemplateUri]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "Location": {"value": "[variables('Environment').ApiStorage.Location]"},
+                    "Type": {"value": "[variables('Environment').ApiStorage.Type]"},
+                    "Name": {"value": "[variables('Environment').ApiStorage.Name]"},
+                    "Purpose": {"value": "[variables('Environment').ApiStorage.Purpose]"}
+                },
+                "debugSetting": {
+                    "detailLevel": "[variables('DeploymentDebugDetailLevel')]"
+                }
+            }
+        },
+        {
+            "condition": "[equals(variables('Environment').AppInsights.Deploy, 'True')]",
+            "name": "AppInsightsDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('Environment').AppInsights.TemplateUri]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "Location": {"value": "[variables('Environment').AppInsights.Location]"},
+                    "Name": {"value": "[variables('Environment').AppInsights.Name]"}
+                },
+                "debugSetting": {
+                    "detailLevel": "[variables('DeploymentDebugDetailLevel')]"
+                }
+            }
+        },
+        {
+            "condition": "[equals(variables('Environment').FunctionApp.Deploy, 'True')]",
+            "name": "FunctionAppDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('Environment').FunctionApp.TemplateUri]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "Location": {"value": "[variables('Environment').FunctionApp.Location]"},
+                    "FunctionAppName": {"value": "[variables('Environment').FunctionApp.FunctionAppName]"},
+                    "FunctionsExtensionVersion": {"value": "[variables('Environment').FunctionApp.FunctionsExtensionVersion]"},
+                    "FunctionsWorkerRuntime": {"value": "[variables('Environment').FunctionApp.FunctionsWorkerRuntime]"},
+                    "StorageAccountConnectionString": {"value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('Environment').ApiStorage.Name,';AccountKey=', reference('ApiStorageDeploy').outputs.Key.value, ';EndpointSuffix=core.windows.net')]"},
+                    "AppInsightsKey": {"value": "[reference('AppInsightsDeploy').outputs.Key.value]"}
+                },
+                "debugSetting": {
+                    "detailLevel": "[variables('deploymentDebugDetailLevel')]"
+                }
+            },
+            "dependsOn": [
+                "ApiStorageDeploy",
+                "AppInsightsDeploy"
+            ]
+        }
+    ],
+    "outputs": {}
+}
