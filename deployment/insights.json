@@ -30,7 +30,7 @@
     ],
     "outputs": {
         "Key": {
-            "type": "object",
+            "type": "string",
             "value": "[reference(resourceId('Microsoft.Insights/components/', parameters('Name')), providers('Microsoft.Insights', 'components').apiVersions[0]).InstrumentationKey]"
         }
     }
