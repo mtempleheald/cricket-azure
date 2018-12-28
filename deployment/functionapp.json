@@ -45,7 +45,7 @@
                 "capacity": 0
             },
             "properties": {
-                "name": "[parameters('FunctionAppName')]"
+                "name": "[variables('planName')]"
             }
         },
         {
