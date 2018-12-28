@@ -65,8 +65,16 @@
                 "siteConfig": {
                     "appSettings": [
                         {
-                            "name": "AzureWebJobsStorage",
-                            "value": "[parameters('StorageAccountConnectionString')]"
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[parameters('AppInsightsKey')]"
+                        },
+                        {
+                            "name": "AzureWebJobsDisableHomepage",
+                            "value": "true"
+                        },
+                        {
+                            "name": "AzureWebJobsDotNetReleaseCompilation",
+                            "value": "false"
                         },
                         {
                             "name": "FUNCTIONS_EXTENSION_VERSION",
@@ -83,10 +91,6 @@
                         {
                             "name": "WEBSITE_CONTENTSHARE",
                             "value": "[parameters('FunctionAppName')]"
-                        },
-                        {
-                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                            "value": "[parameters('AppInsightsKey')]"
                         }
                     ]
                 }
