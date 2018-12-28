@@ -61,7 +61,7 @@
                 "hostNameSslStates": [
                     {}
                 ],
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('FunctionAppName'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('planName'))]",
                 "siteConfig": {
                     "appSettings": [
                         {
