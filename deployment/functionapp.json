@@ -77,6 +77,10 @@
                             "value": "false"
                         },
                         {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[parameters('StorageAccountConnectionString')]"
+                        },
+                        {
                             "name": "FUNCTIONS_EXTENSION_VERSION",
                             "value": "[parameters('FunctionsExtensionVersion')]"
                         },
