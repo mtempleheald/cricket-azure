@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
@@ -9,11 +10,12 @@ namespace Mth.Darts.Cricket.Api.Tests
 {
     public class TestFactory
     {
-        public static DefaultHttpRequest CreateHttpRequest(Dictionary<string, StringValues> dictionary)
+        public static DefaultHttpRequest CreateHttpRequest(Dictionary<string, StringValues> dictionary, Stream body)
         {
             var request = new DefaultHttpRequest(new DefaultHttpContext())
             {
-                Query = new QueryCollection(dictionary)
+                Query = new QueryCollection(dictionary),
+                Body = body
             };
             return request;
         }

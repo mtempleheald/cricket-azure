@@ -21,7 +21,7 @@ namespace Mth.Darts.Cricket.Api
             //log.LogInformation("StartMatch triggered.  RequestUri={req.RequestUri}");
             
             ScoringMode scoringMode;
-            Enum.TryParse(req.Query["scoring_mode"], out scoringMode);
+            Enum.TryParse(req.Query["scoring_mode"][0], out scoringMode);
             int maxRounds = int.Parse(req.Query["max_rounds"][0]);
             List<string> players = new List<string>(req.Query["player"]);
 
