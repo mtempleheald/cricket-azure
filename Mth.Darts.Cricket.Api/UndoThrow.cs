@@ -11,29 +11,23 @@ using Newtonsoft.Json;// SerializeObject
 
 namespace Mth.Darts.Cricket.Api
 {
-    public static class ThrowDart
+    public static class UndoThrow
     {
-        [FunctionName("ThrowDart")]
+        [FunctionName("UndoThrow")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "matches/{matchGuid}/throw")] 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "matches/{matchGuid}/undo")] 
             HttpRequest req,
             string matchGuid,
             ILogger log)
         {
-            log.LogInformation($"ThrowDart function called for match {matchGuid}");
+            log.LogInformation($"UndoThrow function called for match {matchGuid}");
 
             // Expecting the full match in json format as the request body (at least until adding persistence)
             string body = await req.ReadAsStringAsync();
             Match match = JsonConvert.DeserializeObject<Match>(body);
 
-            // Expecting 2 parameters, bed and section, values optional in case of miss
-            Section section;
-            bool sectionHit = Enum.TryParse(req.Query["section"][0], out section);
-            Bed bed;
-            bool bedHit = Enum.TryParse(req.Query["bed"][0], out bed);
-
             // Apply changes to the match object
-            match.Throw (section, bed);
+            match.UndoThrow ();
 
             // Return the result
             var json = JsonConvert.SerializeObject(match, Formatting.Indented);
