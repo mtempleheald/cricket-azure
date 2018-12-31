@@ -41,6 +41,7 @@
                 "TemplateUri": "[uri(variables('NestedTemplateDir'), 'storage.json')]",
                 "Location": "[parameters('Location')]",
                 "Type": "Standard_LRS",
+                "Kind": "Storage",
                 "Name": "[concat(variables('ApplicationName'), 'apistorage')]",
                 "Purpose": "Azure functions require storage for source code, logging, diagnostics"
             },
@@ -57,6 +58,15 @@
                 "FunctionAppName": "[concat(variables('ApplicationName'), 'api')]",
                 "FunctionsExtensionVersion": "~2",
                 "FunctionsWorkerRuntime": "dotnet"
+            },
+            "UiStorage": {
+                "Deploy": "True",
+                "TemplateUri": "[uri(variables('NestedTemplateDir'), 'storage.json')]",
+                "Location": "[parameters('Location')]",
+                "Type": "Standard_LRS",
+                "Kind": "StorageV2",
+                "Name": "[concat(variables('ApplicationName'), 'uistorage')]",
+                "Purpose": "$web container holds all static web content"
             }
         }
     },
@@ -75,6 +85,7 @@
                 "parameters": {
                     "Location": {"value": "[variables('Environment').ApiStorage.Location]"},
                     "Type": {"value": "[variables('Environment').ApiStorage.Type]"},
+                    "Kind": {"value": "[variables('Environment').ApiStorage.Kind]"},
                     "Name": {"value": "[variables('Environment').ApiStorage.Name]"},
                     "Purpose": {"value": "[variables('Environment').ApiStorage.Purpose]"}
                 },
@@ -130,6 +141,29 @@
                 "ApiStorageDeploy",
                 "AppInsightsDeploy"
             ]
+        },
+        {
+            "condition": "[equals(variables('Environment').ApiStorage.Deploy, 'True')]",
+            "name": "UiStorageDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('Environment').UiStorage.TemplateUri]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "Location": {"value": "[variables('Environment').UiStorage.Location]"},
+                    "Type": {"value": "[variables('Environment').UiStorage.Type]"},
+                    "Kind": {"value": "[variables('Environment').UiStorage.Kind]"},
+                    "Name": {"value": "[variables('Environment').UiStorage.Name]"},
+                    "Purpose": {"value": "[variables('Environment').UiStorage.Purpose]"}
+                },
+                "debugSetting": {
+                    "detailLevel": "[variables('DeploymentDebugDetailLevel')]"
+                }
+            }
         }
     ],
     "outputs": {}
