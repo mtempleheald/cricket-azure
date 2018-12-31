@@ -1,0 +1,179 @@
+{
+  "scoringMode": "Standard",
+  "maxRounds": 0,
+  "scores": [
+    {
+      "player": "Van Gerwen",
+      "points": 0,
+      "ranking": 0
+    },
+    {
+      "player": "Taylor",
+      "points": 0,
+      "ranking": 0
+    }
+  ],
+  "currentGame": {
+    "currentPlayer": "Van Gerwen",
+    "currentDart": 2,
+    "currentRound": 1,
+    "complete": false,
+    "scores": [
+      {
+        "player": "Van Gerwen",
+        "order": 0,
+        "states": [
+          {
+            "section": 25,
+            "count": 0
+          },
+          {
+            "section": 20,
+            "count": 3
+          },
+          {
+            "section": 19,
+            "count": 0
+          },
+          {
+            "section": 18,
+            "count": 0
+          },
+          {
+            "section": 17,
+            "count": 0
+          },
+          {
+            "section": 16,
+            "count": 0
+          },
+          {
+            "section": 15,
+            "count": 0
+          }
+        ],
+        "points": 0,
+        "ranking": 1
+      },
+      {
+        "player": "Taylor",
+        "order": 1,
+        "states": [
+          {
+            "section": 25,
+            "count": 0
+          },
+          {
+            "section": 20,
+            "count": 0
+          },
+          {
+            "section": 19,
+            "count": 0
+          },
+          {
+            "section": 18,
+            "count": 0
+          },
+          {
+            "section": 17,
+            "count": 0
+          },
+          {
+            "section": 16,
+            "count": 0
+          },
+          {
+            "section": 15,
+            "count": 0
+          }
+        ],
+        "points": 0,
+        "ranking": 2
+      }
+    ]
+  },
+  "currentGameHistory": [
+    {
+      "currentPlayer": "Van Gerwen",
+      "currentDart": 1,
+      "currentRound": 1,
+      "complete": false,
+      "scores": [
+        {
+          "player": "Van Gerwen",
+          "order": 0,
+          "states": [
+            {
+              "section": 25,
+              "count": 0
+            },
+            {
+              "section": 20,
+              "count": 0
+            },
+            {
+              "section": 19,
+              "count": 0
+            },
+            {
+              "section": 18,
+              "count": 0
+            },
+            {
+              "section": 17,
+              "count": 0
+            },
+            {
+              "section": 16,
+              "count": 0
+            },
+            {
+              "section": 15,
+              "count": 0
+            }
+          ],
+          "points": 0,
+          "ranking": 0
+        },
+        {
+          "player": "Taylor",
+          "order": 1,
+          "states": [
+            {
+              "section": 25,
+              "count": 0
+            },
+            {
+              "section": 20,
+              "count": 0
+            },
+            {
+              "section": 19,
+              "count": 0
+            },
+            {
+              "section": 18,
+              "count": 0
+            },
+            {
+              "section": 17,
+              "count": 0
+            },
+            {
+              "section": 16,
+              "count": 0
+            },
+            {
+              "section": 15,
+              "count": 0
+            }
+          ],
+          "points": 0,
+          "ranking": 0
+        }
+      ]
+    }
+  ],
+  "previousGames": []
+}
