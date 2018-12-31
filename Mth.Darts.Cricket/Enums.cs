@@ -1,4 +1,6 @@
 using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Mth.Darts.Cricket
 {
@@ -31,6 +33,7 @@ namespace Mth.Darts.Cricket
     /// <summary>
     /// ScoringMode - Cricket game scoring mode influences game logic
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum ScoringMode
     {
         Standard,

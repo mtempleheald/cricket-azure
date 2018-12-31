@@ -8,9 +8,11 @@ namespace Mth.Darts.Cricket
     public struct GameScoreSectionState
     {
         [JsonProperty()]
-        internal Section section {get; set;}
+        internal Section section { get; set; }
         [JsonProperty()]
-        internal int count {get; set;}
+        internal int count { get; set; }
+
+        [JsonConstructor]
         internal GameScoreSectionState(Section section, int count) : this()
         {
             this.section = section;

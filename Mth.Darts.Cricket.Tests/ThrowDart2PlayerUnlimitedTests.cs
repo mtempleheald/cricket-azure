@@ -6,15 +6,17 @@ using Mth.Darts.Cricket;
 
 namespace Mth.Darts.Cricket.Tests
 {
-    public class ThrowDart2PlayerTests
+    public class ThrowDart2PlayerUnlimitedTests
     {
+        // TODO - this whole class was copied from ThrowDart2PlayerTests
+        // Consolidate and tidyup tests
         List<String> players;
         Match match;
-        public ThrowDart2PlayerTests() {
+        public ThrowDart2PlayerUnlimitedTests() {
             players = new List<String>();
             players.Add("Brooks");
             players.Add("T1000");
-            match = new Match (players, ScoringMode.Standard, 20);
+            match = new Match (players, ScoringMode.Standard, 0);
         }
 
         [Fact]

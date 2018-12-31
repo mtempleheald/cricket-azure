@@ -37,7 +37,8 @@ namespace Mth.Darts.Cricket
                     ).ToList();
 
         }
-
+        [JsonConstructor]
+        internal Game() { }
         internal void Throw(Section? section, Bed? bed, ScoringMode scoringMode, int maxRounds = 0)
         {
 
@@ -69,7 +70,7 @@ namespace Mth.Darts.Cricket
         // or if all rounds have completed
         private void UpdateGameCompletionStatus(ScoringMode scoringMode, int maxRounds)
         {
-            if (maxRounds < currentRound)
+            if (maxRounds < currentRound && maxRounds > 0)
             {
                 complete = true;
                 return;

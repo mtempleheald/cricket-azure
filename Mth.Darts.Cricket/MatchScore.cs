@@ -12,6 +12,7 @@ namespace Mth.Darts.Cricket
         internal int points { get; }
         [JsonProperty()]
         internal int ranking { get; }
+        [JsonConstructor]
         internal MatchScore(String player, int points, int ranking) : this()
         {
             this.player = player;
