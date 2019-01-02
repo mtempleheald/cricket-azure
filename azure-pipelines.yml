@@ -61,7 +61,7 @@ steps:
   displayName: 'Copy ARM template files'
 - task: CopyFiles@2
   inputs:
-    Contents: '$(serviceNamespace).Ui'
+    Contents: '$(serviceNamespace).Ui/**/*'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/PublishBuildArtifactsV1/task.json
 # To be replaced by PublishPipelineArtifact early 2019
