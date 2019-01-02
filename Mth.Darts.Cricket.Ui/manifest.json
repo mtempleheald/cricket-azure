@@ -1,0 +1,22 @@
+{
+    "name": "Cricket scoreboard",
+    "short_name": "Cricket",
+    "description": "Scoreboard application for the darts game Cricket",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        }
+    ],
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "silver",
+    "start_url": "https://mthcricket01uistorage.z6.web.core.windows.net/",
+    "scope": "/"
+}
