@@ -55,10 +55,16 @@ steps:
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/CopyFilesV2/task.json
 - task: CopyFiles@2
   inputs:
-    Contents: 'deployment/*.json'
+    Contents: 'deployment/arm/*.json'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
     flattenFolders: 'true'
   displayName: 'Copy ARM template files'
+- task: CopyFiles@2
+  inputs:
+    Contents: 'deployment/scripts/*.ps1'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    flattenFolders: 'true'
+  displayName: 'Copy custom deployment scripts'
 - task: CopyFiles@2
   inputs:
     Contents: '$(serviceNamespace).Ui/**/*'
