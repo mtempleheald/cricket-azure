@@ -32,7 +32,7 @@
     },
     "variables": {
         "ApplicationName": "[resourceGroup().name]",
-        "NestedTemplateDir": "https://raw.githubusercontent.com/mtempleheald/cricket-azure/master/deployment/arm",
+        "NestedTemplateDir": "https://raw.githubusercontent.com/mtempleheald/cricket-azure/master/deployment/arm/",
         "DeploymentDebugDetailLevel": "requestContent, responseContent",
         "Environment": "[variables(concat(parameters('Environmentironment'),'Environment'))]",
         "PRDEnvironment": {
