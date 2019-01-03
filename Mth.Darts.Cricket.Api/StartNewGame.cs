@@ -15,7 +15,7 @@ namespace Mth.Darts.Cricket.Api
     {
         [FunctionName("StartNewGame")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "matches/{matchGuid}/undo")] 
+            [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "matches/{matchGuid}/newgame")] 
             HttpRequest req,
             string matchGuid,
             ILogger log)

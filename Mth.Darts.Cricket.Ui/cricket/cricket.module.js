@@ -1,35 +1,91 @@
-angular.module("cricket-app", [])
+angular.module("cricketApp", ['cricketScoreboard', 'cricketHistory'])
     .factory('dataFactory', ['$http', function ($http) { // back-end api services
-
-        var urlBase = '/cricket/api';
+        var urlBase = 'https://mthcricket01api.azurewebsites.net/api';
         var dataFactory = {};
-        // Initial action required to create a game (collection)
-        // Need to know the number of players, game settings ...
-        dataFactory.createGame = function () {
-            return $http.post(urlBase);
+        dataFactory.startMatch = function () {
+            return $http.post(urlBase + "/matches");
         }
-        // This is a very simple application in terms of IO.  
-        // There's only one action that can be taken (element to be posted)
-        // This will move the player one if necessary, update history, recalculate scores...
         dataFactory.throwDart = function (reqBody, config) {
-            return $http.put(urlBase, reqBody, config);
+            return $http.put(urlBase + "/matches/" + "xxx" + "/throw", reqBody, config);
         };
         dataFactory.undoThrow = function (reqBody) {
-            return $http.delete(urlBase, reqBody);
+            return $http.delete(urlBase + "/matches/" + "xxx" + "/undo", reqBody);
+        };
+        dataFactory.newGame = function (reqBody) {
+            return $http.delete(urlBase + "/matches/" + "xxx" + "/newgame", reqBody);
         }
         return dataFactory;
     }])
-    .controller("cricket-controller", function ($scope, dataFactory) { // front-end app controller
-        //alias for this app
+    .controller("cricketController", function cricketController($scope, dataFactory) { // front-end app controller
+
         var cricket = this;
+
+        cricket.scores = [
+            {
+                "name": "Player1",
+                "Twenty": 3,
+                "Nineteen": "2",
+                "Eighteen": "1",
+                "Seventeen": "0",
+                "Sixteen": "0",
+                "Fifteen": "0",
+                "Bull": "0",
+                "points": "0",
+                "position": "0",
+                "score": "0",
+                "current": true
+            },
+            {
+                "name": "Player2",
+                "Twenty": 0,
+                "Nineteen": "0",
+                "Eighteen": "0",
+                "Seventeen": "0",
+                "Sixteen": "0",
+                "Fifteen": "0",
+                "Bull": "3",
+                "points": "25",
+                "position": "0",
+                "score": "0",
+                "current": false
+            }
+        ];
+        cricket.throws = [
+            {
+                "name": "Player2",
+                "value": "Inner"
+            },
+            {
+                "name": "Player2",
+                "value": "-"
+            },
+            {
+                "name": "Player2",
+                "value": "Inner"
+            },
+            {
+                "name": "Player1",
+                "value": "S18"
+            },
+            {
+                "name": "Player1",
+                "value": "D19"
+            },
+            {
+                "name": "Player1",
+                "value": "T20"
+            }
+        ];
+        cricket.currentRound = 2;
+        cricket.maxRounds = 20;
 
         // models for this app
         cricket.allScores = []; /* Static copy of the latest game state retrieved from the server */
-        cricket.scores = []; /* Extracted first element of the game state, the latest version of the scores for display purposes */
+        //cricket.scores = []; /* Extracted first element of the game state, the latest version of the scores for display purposes */
         cricket.rankings = []; /* Static copy of the match rankings retrieved from the server */
         cricket.currentPlayer = ''; /* Static, retrieved from server, used for display purposes */
-        cricket.currentTurn = 0; /* Static, retrieved from server, used to manage traversal to next player */
-        cricket.moves = []; /* Dynamic, decoupled from server representation of the same data */
+        //cricket.currentTurn = 0; /* Static, retrieved from server, used to manage traversal to next player */
+        //cricket.moves = []; /* Dynamic, decoupled from server representation of the same data */
         cricket.hit = ''; /* Dynamic, triggered from click events, the only parameter for backend calls besides the game state */
 
         // methods for this app

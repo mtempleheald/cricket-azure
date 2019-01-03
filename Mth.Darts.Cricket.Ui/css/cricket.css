@@ -62,7 +62,7 @@ section.scores {
 }
 section.visual-entry {
     display: none;
-    grid-area: board;
+    grid-area: visual;
     align-self: start;
     justify-self: start;
     margin-right: auto;
@@ -129,13 +129,16 @@ button {
         hide the simple view and switch to 2 column fixed width layout */
         grid-template-columns: 600px, 900px;
         grid-template-areas: 
-            "header board"
-            "scores board"
-            "history board"
+            "header visual"
+            "scores visual"
+            "history visual"
             "footer .";
     }
     section.visual-entry {
-        display: block;
+        display: grid;
+        grid-template-areas:
+        "board board board board"
+        "miss skip undo ."
     }
     section.simple-entry {
         display: none;
@@ -146,6 +149,10 @@ button {
     }
     table {
         min-width: 20em;
+    }
+    button[name=Miss], button[name=Undo], button[name=Skip] {
+        padding: 5px 25px;
+        margin: 5px 15px;
     }
 }
 
@@ -260,6 +267,9 @@ button[name=Undo] {
 }
 button[name=Skip] {
     grid-area: skip;
+}
+svg#dartboard {
+    grid-area: board;
 }
 
 /* svg#dartboard {

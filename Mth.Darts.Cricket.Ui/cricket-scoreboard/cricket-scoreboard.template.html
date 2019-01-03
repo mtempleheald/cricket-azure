@@ -1,0 +1,99 @@
+<table id="scoreboard">
+    <tr>
+        <th ng-if="$ctrl.max == 0" class="round">round {{$ctrl.round}} of &#8734;</th>
+        <th ng-if="$ctrl.max > 0" class="round">round {{$ctrl.round}} of {{$ctrl.max}}</th>
+        <th ng-repeat="s in $ctrl.scores">
+            <span ng-if="s.current == true" class="current">{{s.name}}</span>
+            <span ng-if="s.current != true">{{s.name}}</span>
+        </th>
+    </tr>
+    <tr>
+        <td>20</td>
+        <td ng-repeat="s in $ctrl.scores">
+            <span ng-repeat="n in [1, 2, 3]" ng-if="s.Twenty >= n" class="good">
+                &#x2714;
+            </span>
+            <span ng-repeat="n in [1, 2, 3]" ng-if="3 - s.Twenty >= n" class="bad">
+                &#x2716;
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td>19</td>
+        <td ng-repeat="s in $ctrl.scores">
+            <span ng-repeat="n in [1, 2, 3]" ng-if="s.Nineteen >= n" class="good">
+                &#x2714;
+            </span>
+            <span ng-repeat="n in [1, 2, 3]" ng-if="3 - s.Nineteen >= n" class="bad">
+                &#x2716;
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td>18</td>
+        <td ng-repeat="s in $ctrl.scores">
+            <span ng-repeat="n in [1, 2, 3]" ng-if="s.Eighteen >= n" class="good">
+                &#x2714;
+            </span>
+            <span ng-repeat="n in [1, 2, 3]" ng-if="3 - s.Eighteen >= n" class="bad">
+                &#x2716;
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td>17</td>
+        <td ng-repeat="s in $ctrl.scores">
+            <span ng-repeat="n in [1, 2, 3]" ng-if="s.Seventeen >= n" class="good">
+                &#x2714;
+            </span>
+            <span ng-repeat="n in [1, 2, 3]" ng-if="3 - s.Seventeen >= n" class="bad">
+                &#x2716;
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td>16</td>
+        <td ng-repeat="s in $ctrl.scores">
+            <span ng-repeat="n in [1, 2, 3]" ng-if="s.Sixteen >= n" class="good">
+                &#x2714;
+            </span>
+            <span ng-repeat="n in [1, 2, 3]" ng-if="3 - s.Sixteen >= n" class="bad">
+                &#x2716;
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td>15</td>
+        <td ng-repeat="s in $ctrl.scores">
+            <span ng-repeat="n in [1, 2, 3]" ng-if="s.Fifteen >= n" class="good">
+                &#x2714;
+            </span>
+            <span ng-repeat="n in [1, 2, 3]" ng-if="3 - s.Fifteen >= n" class="bad">
+                &#x2716;
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td>Bull</td>
+        <td ng-repeat="s in $ctrl.scores">
+            <span ng-repeat="n in [1, 2, 3]" ng-if="s.Bull >= n" class="good">
+                &#x2714;
+            </span>
+            <span ng-repeat="n in [1, 2, 3]" ng-if="3 - s.Bull >= n" class="bad">
+                &#x2716;
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td>Points</td>
+        <td ng-repeat="s in $ctrl.scores">
+            {{s.points}}
+        </td>
+    </tr>
+    <tr>
+        <td>Score</td>
+        <td ng-repeat="s in $ctrl.scores">
+            {{s.score}}
+        </td>
+    </tr>
+</table>
