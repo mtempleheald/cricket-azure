@@ -130,7 +130,7 @@
                     "FunctionAppName": {"value": "[variables('Environment').FunctionApp.FunctionAppName]"},
                     "FunctionsExtensionVersion": {"value": "[variables('Environment').FunctionApp.FunctionsExtensionVersion]"},
                     "FunctionsWorkerRuntime": {"value": "[variables('Environment').FunctionApp.FunctionsWorkerRuntime]"},
-                    "StorageAccountConnectionString": {"value": "[reference('ApiStorageDeploy').outputs.ConnectionString.value)]"},
+                    "StorageAccountConnectionString": {"value": "[reference('ApiStorageDeploy').outputs.ConnectionString.value]"},
                     "AppInsightsKey": {"value": "[reference('AppInsightsDeploy').outputs.Key.value]"}
                 },
                 "debugSetting": {
