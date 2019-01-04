@@ -4,7 +4,8 @@ angular.
         templateUrl: 'cricket-scoreboard/cricket-scoreboard.template.html',
         bindings: {
             scores: '<',
-            round: '<',
-            max: '<'
+            currentRound: '<',
+            maxRounds: '<',
+            currentPlayer: '<'
         }
     });

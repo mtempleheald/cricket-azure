@@ -19,7 +19,7 @@ angular.module("cricketApp", ['cricketScoreboard', 'cricketHistory'])
     .controller("cricketController", function cricketController($scope, dataFactory) { // front-end app controller
 
         var cricket = this;
-
+        // scores and rankings from the API combined to a single array for lightweight presentation
         cricket.scores = [
             {
                 "name": "Player1",
@@ -32,8 +32,7 @@ angular.module("cricketApp", ['cricketScoreboard', 'cricketHistory'])
                 "Bull": "0",
                 "points": "0",
                 "position": "0",
-                "score": "0",
-                "current": true
+                "score": "0"
             },
             {
                 "name": "Player2",
@@ -46,10 +45,10 @@ angular.module("cricketApp", ['cricketScoreboard', 'cricketHistory'])
                 "Bull": "3",
                 "points": "25",
                 "position": "0",
-                "score": "0",
-                "current": false
+                "score": "0"
             }
         ];
+        // previous hits, don't need full undo history on the UI
         cricket.throws = [
             {
                 "name": "Player2",
@@ -76,17 +75,21 @@ angular.module("cricketApp", ['cricketScoreboard', 'cricketHistory'])
                 "value": "T20"
             }
         ];
-        cricket.currentRound = 2;
         cricket.maxRounds = 20;
+        cricket.currentRound = 2;
+        cricket.currentPlayer = "Player1";
+        cricket.section = "";
+        cricket.bed = "";
+
 
         // models for this app
-        cricket.allScores = []; /* Static copy of the latest game state retrieved from the server */
+        //cricket.allScores = []; /* Static copy of the latest game state retrieved from the server */
         //cricket.scores = []; /* Extracted first element of the game state, the latest version of the scores for display purposes */
-        cricket.rankings = []; /* Static copy of the match rankings retrieved from the server */
-        cricket.currentPlayer = ''; /* Static, retrieved from server, used for display purposes */
+        //cricket.rankings = []; /* Static copy of the match rankings retrieved from the server */
+        //cricket.currentPlayer = ''; /* Static, retrieved from server, used for display purposes */
         //cricket.currentTurn = 0; /* Static, retrieved from server, used to manage traversal to next player */
         //cricket.moves = []; /* Dynamic, decoupled from server representation of the same data */
-        cricket.hit = ''; /* Dynamic, triggered from click events, the only parameter for backend calls besides the game state */
+        //cricket.hit = ''; /* Dynamic, triggered from click events, the only parameter for backend calls besides the game state */
 
         // methods for this app
         cricket.createGame = function () {
