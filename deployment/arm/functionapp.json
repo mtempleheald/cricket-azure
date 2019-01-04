@@ -32,7 +32,7 @@
         {
             "name": "[variables('planName')]",
             "type": "Microsoft.Web/serverfarms",
-            "kind": "functionapp",
+            "kind": "linux",
             "apiVersion": "2018-02-01",
             "comments": "api_url https://docs.microsoft.com/en-us/azure/templates/microsoft.web/2018-02-01/serverfarms",
             "location": "[parameters('Location')]",
