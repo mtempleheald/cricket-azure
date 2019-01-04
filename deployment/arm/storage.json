@@ -68,6 +68,10 @@
         "Key": {
             "type": "string",
             "value": "[listKeys(parameters('Name'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
+        },
+        "ConnectionString": {
+            "type": "string",
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('Name'),';AccountKey=', [listKeys(parameters('Name'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value], ';EndpointSuffix=core.windows.net')]"
         }
     }
 }

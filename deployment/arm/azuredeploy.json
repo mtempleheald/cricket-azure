@@ -130,7 +130,7 @@
                     "FunctionAppName": {"value": "[variables('Environment').FunctionApp.FunctionAppName]"},
                     "FunctionsExtensionVersion": {"value": "[variables('Environment').FunctionApp.FunctionsExtensionVersion]"},
                     "FunctionsWorkerRuntime": {"value": "[variables('Environment').FunctionApp.FunctionsWorkerRuntime]"},
-                    "StorageAccountConnectionString": {"value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('Environment').ApiStorage.Name,';AccountKey=', reference('ApiStorageDeploy').outputs.Key.value, ';EndpointSuffix=core.windows.net')]"},
+                    "StorageAccountConnectionString": {"value": "[reference('ApiStorageDeploy').outputs.ConnectionString.value)]"},
                     "AppInsightsKey": {"value": "[reference('AppInsightsDeploy').outputs.Key.value]"}
                 },
                 "debugSetting": {
