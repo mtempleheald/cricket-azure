@@ -57,7 +57,8 @@
                 "Location": "[parameters('Location')]",
                 "FunctionAppName": "[concat(variables('ApplicationName'), 'api')]",
                 "FunctionsExtensionVersion": "~2",
-                "FunctionsWorkerRuntime": "dotnet"
+                "FunctionsWorkerRuntime": "dotnet",
+                "FrontEndUri": "[concat('https://', variables('ApplicationName'), 'uistorage', '.z6.web.core.windows.net')]"
             },
             "UiStorage": {
                 "Deploy": "True",
@@ -131,7 +132,8 @@
                     "FunctionsExtensionVersion": {"value": "[variables('Environment').FunctionApp.FunctionsExtensionVersion]"},
                     "FunctionsWorkerRuntime": {"value": "[variables('Environment').FunctionApp.FunctionsWorkerRuntime]"},
                     "StorageAccountConnectionString": {"value": "[reference('ApiStorageDeploy').outputs.ConnectionString.value]"},
-                    "AppInsightsKey": {"value": "[reference('AppInsightsDeploy').outputs.Key.value]"}
+                    "AppInsightsKey": {"value": "[reference('AppInsightsDeploy').outputs.Key.value]"},
+                    "FrontEndUri": {"value": "[variables('Environment').FunctionApp.FrontEndUri]"}
                 },
                 "debugSetting": {
                     "detailLevel": "[variables('deploymentDebugDetailLevel')]"

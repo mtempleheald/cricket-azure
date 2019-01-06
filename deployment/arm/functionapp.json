@@ -23,6 +23,9 @@
         },
         "AppInsightsKey": {
             "type": "string"
+        },
+        "FrontEndUri": {
+            "type": "string"
         }
     },
     "variables": {
@@ -92,7 +95,15 @@
                             "name": "WEBSITE_CONTENTSHARE",
                             "value": "[parameters('FunctionAppName')]"
                         }
-                    ]
+                    ],
+                    "cors": {
+                        "allowedOrigins": [
+                            "https://functions.azure.com",
+                            "https://functions-staging.azure.com",
+                            "https://functions-next.azure.com",
+                            "[parameters('FrontEndUri')]"
+                        ]
+                    }
                 }
             },
             "dependsOn": [
