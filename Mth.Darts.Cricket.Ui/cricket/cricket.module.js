@@ -1,158 +1,229 @@
-angular.module("cricketApp", ['cricketScoreboard', 'cricketHistory'])
-    .factory('dataFactory', ['$http', function ($http) { // back-end api services
-        var urlBase = 'https://mthcricket01api.azurewebsites.net/api';
-        var dataFactory = {};
-        dataFactory.startMatch = function () {
-            return $http.post(urlBase + "/matches");
+var cricketApp = angular.module("cricketApp", ['cricketScoreboard', 'cricketHistory']);
+cricketApp.factory('dataFactory', ['$http', function ($http) { // back-end api services
+    var urlBase = 'https://mthcricket01api.azurewebsites.net/api';
+    var dataFactory = {};
+    dataFactory.startMatch = function (maxRounds, scoringMode, ...players) {
+        let params = new HttpParams();
+        params = Params.append('max_rounds', maxRounds);
+        params = Params.append('scoring_mode', scoringMode);
+        for (let player of players) {
+            params = Params.append('player', player);
         }
-        dataFactory.throwDart = function (reqBody, config) {
-            return $http.put(urlBase + "/matches/" + "xxx" + "/throw", reqBody, config);
-        };
-        dataFactory.undoThrow = function (reqBody) {
-            return $http.delete(urlBase + "/matches/" + "xxx" + "/undo", reqBody);
-        };
-        dataFactory.newGame = function (reqBody) {
-            return $http.delete(urlBase + "/matches/" + "xxx" + "/newgame", reqBody);
+        return $http.post(urlBase + "/matches", "", { "params": params });
+    }
+    dataFactory.throwDart = function (reqBody, section, bed) {
+        return $http({
+            "method": 'POST',
+            "url": urlBase + "/matches/" + "xxx" + "/throw",
+            "params": {
+                section: section,
+                bed: bed
+            },
+            "data": reqBody
+        });
+    };
+    dataFactory.undoThrow = function (reqBody) {
+        return $http.post(urlBase + "/matches/" + "xxx" + "/undo", reqBody);
+    };
+    dataFactory.newGame = function (reqBody) {
+        return $http.post(urlBase + "/matches/" + "xxx" + "/newgame", reqBody);
+    }
+    return dataFactory;
+}]);
+cricketApp.controller("cricketController", function cricketController($scope, dataFactory) { // front-end app controller
+
+    var cricket = this;
+    // match config
+    cricket.players = ["Player1", "Player2"];
+    cricket.maxRounds = 20;
+    cricket.scoringMode = "Standard";
+    // full match state
+    cricket.match = {};
+    // scores and rankings extracted from the match, combined to a single array for lightweight presentation
+    cricket.scores = [
+        {
+            "name": "Player1",
+            "Twenty": 3,
+            "Nineteen": "2",
+            "Eighteen": "1",
+            "Seventeen": "0",
+            "Sixteen": "0",
+            "Fifteen": "0",
+            "Bull": "0",
+            "points": "0",
+            "position": "0",
+            "score": "0"
+        },
+        {
+            "name": "Player2",
+            "Twenty": 0,
+            "Nineteen": "0",
+            "Eighteen": "0",
+            "Seventeen": "0",
+            "Sixteen": "0",
+            "Fifteen": "0",
+            "Bull": "3",
+            "points": "25",
+            "position": "0",
+            "score": "0"
         }
-        return dataFactory;
-    }])
-    .controller("cricketController", function cricketController($scope, dataFactory) { // front-end app controller
+    ];
+    // previous hits, don't need full undo history on the UI
+    cricket.throws = [
+        {
+            "name": "Player2",
+            "value": "Inner"
+        },
+        {
+            "name": "Player2",
+            "value": "-"
+        },
+        {
+            "name": "Player2",
+            "value": "Inner"
+        },
+        {
+            "name": "Player1",
+            "value": "S18"
+        },
+        {
+            "name": "Player1",
+            "value": "D19"
+        },
+        {
+            "name": "Player1",
+            "value": "T20"
+        }
+    ];
+    // game state
+    cricket.currentRound = 2;
+    cricket.currentPlayer = "Player1";
+    cricket.currentDart = 1;
+    // current throw
+    cricket.section = "";
+    cricket.bed = "";
 
-        var cricket = this;
-        // scores and rankings from the API combined to a single array for lightweight presentation
-        cricket.scores = [
-            {
-                "name": "Player1",
-                "Twenty": 3,
-                "Nineteen": "2",
-                "Eighteen": "1",
-                "Seventeen": "0",
-                "Sixteen": "0",
-                "Fifteen": "0",
-                "Bull": "0",
-                "points": "0",
-                "position": "0",
-                "score": "0"
-            },
-            {
-                "name": "Player2",
-                "Twenty": 0,
-                "Nineteen": "0",
-                "Eighteen": "0",
-                "Seventeen": "0",
-                "Sixteen": "0",
-                "Fifteen": "0",
-                "Bull": "3",
-                "points": "25",
-                "position": "0",
-                "score": "0"
+    function playAudio(sound) {
+        var audio = document.getElementById(sound);
+        audio.currentTime = 0;// reset in case we try to play the same sound twice in quick succession
+        audio.play();
+    }
+
+    cricket.parseMatchObject = function () {
+        cricket.currentPlayer = cricket.match.currentGame.currentPlayer;
+        cricket.currentRound = cricket.match.currentGame.currentRound;
+        cricket.currentDart = cricket.match.currentGame.currentDart;
+        cricket.scores = cricket.match.currentGame.scores.map(function (score) {
+            return {
+                "name": score.player,
+                "Twenty": score.states.filter(function (state) { return state.section == 20; }).count,
+                "Nineteen": score.states.filter(function (state) { return state.section == 19; }).count,
+                "Eighteen": score.states.filter(function (state) { return state.section == 18; }).count,
+                "Seventeen": score.states.filter(function (state) { return state.section == 17; }).count,
+                "Sixteen": score.states.filter(function (state) { return state.section == 16; }).count,
+                "Fifteen": score.states.filter(function (state) { return state.section == 15; }).count,
+                "Bull": score.states.filter(function (state) { return state.section == 25; }).count,
+                "points": score.points,
+                "position": cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; }).ranking,
+                "score": cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; }).points,
             }
-        ];
-        // previous hits, don't need full undo history on the UI
-        cricket.throws = [
-            {
-                "name": "Player2",
-                "value": "Inner"
-            },
-            {
-                "name": "Player2",
-                "value": "-"
-            },
-            {
-                "name": "Player2",
-                "value": "Inner"
-            },
-            {
-                "name": "Player1",
-                "value": "S18"
-            },
-            {
-                "name": "Player1",
-                "value": "D19"
-            },
-            {
-                "name": "Player1",
-                "value": "T20"
-            }
-        ];
-        cricket.maxRounds = 20;
-        cricket.currentRound = 2;
-        cricket.currentPlayer = "Player1";
-        cricket.section = "";
-        cricket.bed = "";
+        });
+    }
 
+    cricket.startMatch = function () {
+        console.log("startMatch initiated");
+        dataFactory.startMatch(cricket.maxRounds, cricket.scoringMode, cricket.players)
+            .then(function successCallback(response) {
+                console.log("Success response: ", response);
+                cricket.match = response;
+                cricket.parseMatchObject();
+            }, function errorCallback(response) {
+                console.log("Failure response: ", response);
+            });
+        console.log("startMatch completed");
+    }
 
-        // models for this app
-        //cricket.allScores = []; /* Static copy of the latest game state retrieved from the server */
-        //cricket.scores = []; /* Extracted first element of the game state, the latest version of the scores for display purposes */
-        //cricket.rankings = []; /* Static copy of the match rankings retrieved from the server */
-        //cricket.currentPlayer = ''; /* Static, retrieved from server, used for display purposes */
-        //cricket.currentTurn = 0; /* Static, retrieved from server, used to manage traversal to next player */
-        //cricket.moves = []; /* Dynamic, decoupled from server representation of the same data */
-        //cricket.hit = ''; /* Dynamic, triggered from click events, the only parameter for backend calls besides the game state */
+    cricket.hit = function (hit) {
+        console.log("throwDart initiated");
+        var section;
+        switch (hit.substring(0, 1)) {
+            case "s": // single
+                bed = 1;
+                section = hit.substring(1, null);
+                playAudio("hit1");
+                break;
+            case "d": // double
+                bed = 2;
+                section = hit.substring(1, null);
+                playAudio("hit2");
+                break;
+            case "t": // treble
+                bed = 3;
+                section = hit.substring(1, null);
+                playAudio("hit3");
+                break;
+            case "o": // outer bull
+                bed = 1;
+                section = 25;
+                playAudio("hit1");
+                break;
+            case "i": // inner bull
+                bed = 2;
+                section = 25;
+                playAudio("hit2");
+                break;
+            case "m": // miss
+                playAudio("miss");
+                break;
+            default:
+                alert("error " + hit.substring(0, 1));
+                break;
+        }
 
-        // methods for this app
-        cricket.createGame = function () {
-            console.log("createGame");
-            dataFactory.createGame()
-                .then(function (response) {
-                    console.log('Response returned from createGame', response);
-                    cricket.allScores = response.data.game_scores;
-                    cricket.scores = response.data.game_scores[0].player_scores;
-                    cricket.rankings = response.data.match_rankings;
-                    cricket.currentPlayer = response.data.current_player;
-                    cricket.currentTurn = 1;
-                }, function (error) {
-                    console.log('Error returned from createGame', error);
-                });
-        };
-        cricket.undo = function () {
-            console.log("undo");
-            var req = {
-                "game_state": {
-                    "game_scores": cricket.scores,
-                    "match_rankings": cricket.rankings,
-                    "prev_throws": cricket.throws,
-                    "current_player": cricket.currentPlayer,
-                    "current_turn": cricket.currentTurn
-                }
-            };
-            dataFactory.undoThrow(req)
-                .then(function (response) {
-                    console.log('Response returned from undoThrow', response);
-                    cricket.allScores = response.data.game_scores;
-                    cricket.scores = response.data.game_scores[0].player_scores;
-                    cricket.rankings = response.data.match_rankings;
-                    cricket.currentPlayer = response.data.current_player;
-                    cricket.currentTurn = response.data.current_turn;
-                    cricket.moves.shift();// pop
-                }, function (error) {
-                    console.log('Error returned from undoThrow', error);
-                });
-        };
-        cricket.throwDart = function () {
-            console.log("throwDart: ", cricket.currentPlayer, " ", cricket.hit);
-            var req = {
-                "game_scores": cricket.scores,
-                "match_rankings": cricket.rankings,
-                "prev_throws": cricket.throws,
-                "current_player": cricket.currentPlayer,
-                "current_turn": cricket.currentTurn
-            };
-            // game_state": {
-            //},"throw": cricket.hit
-            var cfg = { "params": { "throw": cricket.hit } };
-            dataFactory.throwDart(req, cfg)
-                .then(function (response) {
-                    console.log('Response returned from throwDart', response);
-                    cricket.allScores = response.data.game_scores;
-                    cricket.scores = response.data.game_scores[0].player_scores;
-                    cricket.rankings = response.data.match_rankings;
-                    cricket.currentPlayer = response.data.current_player;
-                    cricket.currentTurn = response.data.current_turn;
-                    cricket.moves.unshift({ player: cricket.currentPlayer, hit: cricket.hit }); // push
-                }, function (error) {
-                    console.log('Error returned from throwDart', error);
-                });
-        };
-    });
+        dataFactory.throwDart(cricket.match, cricket.section, cricket.bed)
+            .then(function successCallback(response) {
+                console.log("Success response: ", response);
+                cricket.match = response;
+                cricket.parseMatchObject();
+            }, function errorCallback(response) {
+                console.log("Failure response: ", response);
+            })
+        console.log("throwDart completed");
+    }
+
+    cricket.miss = function () {
+        cricket.hit("miss");
+    }
+    cricket.skip = function () {
+        cricket.hit("miss");
+        cricket.hit("miss");
+        cricket.hit("miss");
+    }
+
+    cricket.undo = function () {
+        console.log("undoThrow initiated");
+        dataFactory.undoThrow()
+            .then(function successCallback(response) {
+                console.log("Success response: ", response);
+                cricket.match = response;
+                cricket.parseMatchObject();
+            }, function errorCallback(response) {
+                console.log("Failure response: ", response);
+            })
+        console.log("undoThrow completed");
+    }
+
+    cricket.newGame = function () {
+        console.log("newGame initiated");
+        dataFactory.newGame()
+            .then(function successCallback(response) {
+                console.log("Success response: ", response);
+                cricket.match = response;
+                cricket.parseMatchObject();
+            }, function errorCallback(response) {
+                console.log("Failure response: ", response);
+            })
+        console.log("newGame completed");
+    }
+
+});
