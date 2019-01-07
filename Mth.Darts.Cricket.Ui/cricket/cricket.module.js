@@ -6,7 +6,7 @@ cricketApp.factory('dataFactory', ['$http', function ($http) {
         let params = {
             "max_rounds": maxRounds,
             "scoring_mode": scoringMode,
-            "player": players
+            "player[]": players
         };
         return $http.post(urlBase + "/matches", "", { "params": params });
     }
