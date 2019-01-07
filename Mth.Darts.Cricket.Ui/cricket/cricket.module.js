@@ -2,7 +2,7 @@ var cricketApp = angular.module("cricketApp", ['cricketScoreboard', 'cricketHist
 cricketApp.factory('dataFactory', ['$http', function ($http) {
     var urlBase = 'https://mthcricket01api.azurewebsites.net/api';
     var dataFactory = {};
-    dataFactory.startMatch = function (maxRounds, scoringMode, players) {
+    dataFactory.startMatch = function (maxRounds, scoringMode, players) {        
         let params = {
             "max_rounds": maxRounds,
             "scoring_mode": scoringMode,
@@ -29,7 +29,7 @@ cricketApp.factory('dataFactory', ['$http', function ($http) {
     }
     return dataFactory;
 }]);
-cricketApp.controller("cricketController", function cricketController($scope, dataFactory) {
+cricketApp.controller("cricketController", function cricketController($scope, $log, dataFactory) {
 
     var cricket = this;
     // match settings
@@ -38,17 +38,17 @@ cricketApp.controller("cricketController", function cricketController($scope, da
     cricket.maxRounds = 20;
     cricket.scoringMode = "Standard";
     cricket.addPlayer = function (player) {
-        console.log("addPlayer", player);
+        $log.debug("addPlayer", player);
         if (player != "") {
             cricket.players.push(player);
         }
     }
     cricket.removePlayer = function () {
-        console.log("removePlayer");
+        $log.debug("removePlayer");
         cricket.players.pop();
     }
-    cricket.hideConfig = function() {
-        document.getElementsByClassName ('Config').style.display = "none";
+    cricket.hideConfig = function () {
+        document.getElementsByClassName('Config').style.display = "none";
     }
     // full match state
     cricket.match = {};
@@ -144,22 +144,22 @@ cricketApp.controller("cricketController", function cricketController($scope, da
     }
 
     cricket.startMatch = function () {
-        console.log("startMatch initiated");
+        $log.debug ("startMatch, maxRounds=", cricket.maxRounds, " scoringMode=", cricket.scoringMode, " players=", cricket.players);
         dataFactory.startMatch(cricket.maxRounds, cricket.scoringMode, cricket.players)
             .then(function successCallback(response) {
-                console.log("Success response: ", response);
+                $log.debug("Success response: ", response);
                 cricket.match = response.data;
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
-                console.log("Failure response: ", response);
+                $log.debug("Failure response: ", response);
             });
         cricket.matchConfigured = true;
-        console.log("startMatch completed");
     }
 
     cricket.hit = function (hit) {
-        console.log("throwDart initiated");
+        $log.debug("hit ", hit);
         var section;
+        var bed;
         switch (hit.substring(0, 1)) {
             case "s": // single
                 bed = 1;
@@ -193,16 +193,15 @@ cricketApp.controller("cricketController", function cricketController($scope, da
                 alert("error " + hit.substring(0, 1));
                 break;
         }
-
-        dataFactory.throwDart(cricket.match, cricket.section, cricket.bed)
+        $log.debug ("throwDart, section=", section, " bed=", bed);
+        dataFactory.throwDart(cricket.match, section, bed)
             .then(function successCallback(response) {
-                console.log("Success response: ", response);
+                $log.debug("Success response: ", response);
                 cricket.match = response.data;
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
-                console.log("Failure response: ", response);
+                $log.debug("Failure response: ", response);
             })
-        console.log("throwDart completed");
     }
 
     cricket.miss = function () {
@@ -215,29 +214,27 @@ cricketApp.controller("cricketController", function cricketController($scope, da
     }
 
     cricket.undo = function () {
-        console.log("undoThrow initiated");
+        $log.debug("undoThrow initiated");
         dataFactory.undoThrow()
             .then(function successCallback(response) {
-                console.log("Success response: ", response);
+                $log.debug("Success response: ", response);
                 cricket.match = response.data;
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
-                console.log("Failure response: ", response);
+                $log.debug("Failure response: ", response);
             })
-        console.log("undoThrow completed");
     }
 
     cricket.newGame = function () {
-        console.log("newGame initiated");
+        $log.debug("newGame initiated");
         dataFactory.newGame()
             .then(function successCallback(response) {
-                console.log("Success response: ", response);
+                $log.debug("Success response: ", response);
                 cricket.match = response.data;
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
-                console.log("Failure response: ", response);
+                $log.debug("Failure response: ", response);
             })
-        console.log("newGame completed");
     }
 
 });

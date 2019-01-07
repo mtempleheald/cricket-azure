@@ -17,12 +17,10 @@
         </li>
     </ul>
 
-
     <input name="new_player" type="text" ng-model="newPlayer" />
     <button type="button" ng-click="$ctrl.addPlayer({player: newPlayer}); newPlayer = '';">Add</button>
     <button type="button" ng-click="$ctrl.removePlayer()">Remove</button>
-
-
     <br />
+
     <button type="button" ng-click="$ctrl.startMatch()">Start Match</button>
 </form>
