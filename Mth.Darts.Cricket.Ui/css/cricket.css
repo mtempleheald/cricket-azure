@@ -16,7 +16,7 @@ html {
     box-sizing: border-box;
     font-family: sans-serif;
 }
-body {    
+body {
     background-color: var(--board-bg, black);
     color: var(--board-wire, silver);
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -100,6 +100,16 @@ button {
     /* border-radius: 15%; *//* 50% would be circular buttons*/
     padding: 0.2em;
     margin: 0.1em;
+}
+input {
+    background-color: var(--board-bg);
+    color: var(--board-wire);
+    border: 1px solid var(--board-wire);
+    padding: 0.5em;
+    margin: 0.1em;
+}
+a {
+    color: var(--board-wire);
 }
 
 @media only screen and (max-width: 1250px) and (orientation: landscape) {
@@ -306,4 +316,10 @@ section.config.ng-hide {
     opacity: 0;
     z-index: -10000;
     transition: all 2s ease;
+}
+section.config * {
+    margin: 0.5em ;
+}
+section.config ul {
+    list-style-type: none;
 }

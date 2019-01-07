@@ -149,7 +149,7 @@ cricketApp.controller("cricketController", function cricketController($scope, da
         dataFactory.startMatch(cricket.maxRounds, cricket.scoringMode, cricket.players)
             .then(function successCallback(response) {
                 console.log("Success response: ", response);
-                cricket.match = response;
+                cricket.match = response.data;
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
                 console.log("Failure response: ", response);
@@ -198,7 +198,7 @@ cricketApp.controller("cricketController", function cricketController($scope, da
         dataFactory.throwDart(cricket.match, cricket.section, cricket.bed)
             .then(function successCallback(response) {
                 console.log("Success response: ", response);
-                cricket.match = response;
+                cricket.match = response.data;
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
                 console.log("Failure response: ", response);
@@ -220,7 +220,7 @@ cricketApp.controller("cricketController", function cricketController($scope, da
         dataFactory.undoThrow()
             .then(function successCallback(response) {
                 console.log("Success response: ", response);
-                cricket.match = response;
+                cricket.match = response.data;
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
                 console.log("Failure response: ", response);
@@ -233,7 +233,7 @@ cricketApp.controller("cricketController", function cricketController($scope, da
         dataFactory.newGame()
             .then(function successCallback(response) {
                 console.log("Success response: ", response);
-                cricket.match = response;
+                cricket.match = response.data;
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
                 console.log("Failure response: ", response);
