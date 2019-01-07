@@ -20,7 +20,7 @@ namespace Mth.Darts.Cricket.Api.Tests
             Dictionary<string, StringValues> reqParams = new Dictionary<string, StringValues>();
             reqParams.Add("scoring_mode", new StringValues("Standard"));
             reqParams.Add("max_rounds", new StringValues("0"));
-            reqParams.Add("player", new StringValues(new string[] {"Van Gerwen", "Taylor"}));
+            reqParams.Add("player[]", new StringValues(new string[] {"Van Gerwen", "Taylor"}));
 
             var request = TestFactory.CreateHttpRequest (reqParams, new MemoryStream());
             var response = (OkObjectResult)await StartMatch.Run(request, logger);

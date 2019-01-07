@@ -23,7 +23,7 @@ namespace Mth.Darts.Cricket.Api
             ScoringMode scoringMode;
             Enum.TryParse(req.Query["scoring_mode"][0], out scoringMode);
             int maxRounds = int.Parse(req.Query["max_rounds"][0]);
-            List<string> players = new List<string>(req.Query["player"]);
+            List<string> players = new List<string>(req.Query["player[]"]);
 
             Match match = new Match (players, scoringMode, maxRounds);
             var json = JsonConvert.SerializeObject (match, Formatting.Indented);
