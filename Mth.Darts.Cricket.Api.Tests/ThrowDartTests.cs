@@ -18,8 +18,8 @@ namespace Mth.Darts.Cricket.Api.Tests
         public async void TwoPlayerMatch_HitSomething_Success()
         {
             Dictionary<string, StringValues> reqParams = new Dictionary<string, StringValues>();
-            reqParams.Add("section", new StringValues("Twenty"));
-            reqParams.Add("bed", new StringValues("Treble"));
+            reqParams.Add("section", new StringValues("20"));
+            reqParams.Add("bed", new StringValues("3"));
 
             HttpRequest request;
             OkObjectResult response;
