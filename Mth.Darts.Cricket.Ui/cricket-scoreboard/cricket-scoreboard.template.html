@@ -6,12 +6,12 @@
         </th>
         <th ng-if="$ctrl.maxRounds > 0" class="round">
             <p>{{$ctrl.scoringMode}}</p>
-            <p>round {{$ctrl.currentRound}} / {{$ctrl.maxRounds}}</p>
+            <p>{{$ctrl.currentRound}}/{{$ctrl.maxRounds}}</p>
         </th>
         <th ng-repeat="s in $ctrl.scores">
             <span ng-if="$ctrl.currentPlayer == s.name" class="current">
                 <p>{{s.name}}</p>
-                <i ng-repeat="d in [1, 2, 3]" ng-if="d >= $ctrl.currentDart" class="fas fa-location-arrow"></i>     
+                <i ng-repeat="d in [1, 2, 3]" ng-if="d >= $ctrl.currentDart" class="good fas fa-location-arrow"></i>     
             </span>
             <span ng-if="$ctrl.currentPlayer != s.name">
                 <p>{{s.name}}</p>

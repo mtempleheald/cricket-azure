@@ -4,7 +4,7 @@
         <th>Player</th>
         <th>Throw</th>
     </tr>
-    <tr ng-repeat="t in $ctrl.throws | orderBy:'-'">
+    <tr ng-repeat="t in $ctrl.throws | orderBy:'-' | limitTo:9">
         <td> {{ t.name }} </td>
         <td> {{ t.value }}</td>
     </tr>

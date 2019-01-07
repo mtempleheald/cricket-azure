@@ -72,9 +72,9 @@ section.simple-entry {
     display: grid;
     grid-template-areas:
         "t20 t19 t18 t17 t16 t15 ."
-        "d20 d19 d18 d17 d16 d15 outer"
-        "s20 s19 s18 s17 s16 s15 bull"
-        ". miss . skip . undo .";
+        "d20 d19 d18 d17 d16 d15 bull"
+        "s20 s19 s18 s17 s16 s15 outer"
+        "miss skip undo newgame newgame . .";
     justify-self: stretch;
     align-self: stretch;
     /* grid-auto-rows: 64px;
@@ -123,14 +123,14 @@ a {
     }
     section.simple-entry {
         grid-template-areas:
-        "miss skip undo"
         "t20 d20 s20"
         "t19 d19 s19"
         "t18 d18 s18"
         "t17 d17 s17"
         "t16 d16 s16"
         "t15 d15 s15"
-        "bull outer .";
+        "miss bull outer"
+        "skip undo newgame";
     }
 }
 @media only screen and (min-width: 1200px) and (orientation: landscape) {
@@ -150,7 +150,7 @@ a {
         display: grid;
         grid-template-areas:
         "board board board board"
-        "miss skip undo ."
+        "miss skip undo newgame"
     }
     section.simple-entry {
         display: none;
@@ -178,11 +178,11 @@ table td {
     font-weight: normal;
     border: 1px solid var(--board-wire);
     color: var(--board-wire);
-    text-align: inherit;
+    text-align: center;
     padding: 0.25em;
 }
-table td > span {
-    padding: 0 0.5em;
+table th {
+    vertical-align: top;
 }
 .good {
     color: var(--board-green);
@@ -192,6 +192,9 @@ table td > span {
     color: var(--board-red);
     font-weight: bold;
 }
+/*table td > span {
+    padding: 0 0.5em;
+}
 table th > span:before {
     content: "\23F9";
     color: var(--board-red);
@@ -200,7 +203,7 @@ table th > span:before {
 table th > span.current:before {
     content: "\25B6";
     color: var(--board-green);
-}
+}*/
 table td {
     text-align: center;
 }
@@ -275,6 +278,9 @@ button[name=Undo] {
 }
 button[name=Skip] {
     grid-area: skip;
+}
+button[name=NewGame] {
+    grid-area: newgame;
 }
 svg#dartboard {
     grid-area: board;
