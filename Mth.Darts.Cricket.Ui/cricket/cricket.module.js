@@ -163,17 +163,17 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
         switch (hit.substring(0, 1)) {
             case "s": // single
                 bed = 1;
-                section = hit.substring(1, null);
+                section = hit.substring(1, hit.length);
                 playAudio("hit1");
                 break;
             case "d": // double
                 bed = 2;
-                section = hit.substring(1, null);
+                section = hit.substring(1, hit.length);
                 playAudio("hit2");
                 break;
             case "t": // treble
                 bed = 3;
-                section = hit.substring(1, null);
+                section = hit.substring(1, hit.length);
                 playAudio("hit3");
                 break;
             case "o": // outer bull
@@ -190,7 +190,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
                 playAudio("miss");
                 break;
             default:
-                alert("error " + hit.substring(0, 1));
+                $log.error("Unexpected hit, ", hit);
                 break;
         }
         $log.debug ("throwDart, section=", section, " bed=", bed);
