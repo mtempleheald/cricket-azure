@@ -126,19 +126,19 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
         cricket.currentPlayer = cricket.match.currentGame.currentPlayer;
         cricket.currentRound = cricket.match.currentGame.currentRound;
         cricket.currentDart = cricket.match.currentGame.currentDart;
-        cricket.scores = cricket.match.currentGame.scores.map(function (score) {
+        cricket.scores = cricket.match.currentGame.scores.map(function (score) {            
             return {
-                "name": score.player,
-                "Twenty": score.states.filter(function (state) { return state.section == 20; }).count,
-                "Nineteen": score.states.filter(function (state) { return state.section == 19; }).count,
-                "Eighteen": score.states.filter(function (state) { return state.section == 18; }).count,
-                "Seventeen": score.states.filter(function (state) { return state.section == 17; }).count,
-                "Sixteen": score.states.filter(function (state) { return state.section == 16; }).count,
-                "Fifteen": score.states.filter(function (state) { return state.section == 15; }).count,
-                "Bull": score.states.filter(function (state) { return state.section == 25; }).count,
-                "points": score.points,
-                "position": cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; }).ranking,
-                "score": cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; }).points,
+                "name":      score.player,
+                "Twenty":    score.states.filter(function (state) { return state.section == 20; })[0].count,
+                "Nineteen":  score.states.filter(function (state) { return state.section == 19; })[0].count,
+                "Eighteen":  score.states.filter(function (state) { return state.section == 18; })[0].count,
+                "Seventeen": score.states.filter(function (state) { return state.section == 17; })[0].count,
+                "Sixteen":   score.states.filter(function (state) { return state.section == 16; })[0].count,
+                "Fifteen":   score.states.filter(function (state) { return state.section == 15; })[0].count,
+                "Bull":      score.states.filter(function (state) { return state.section == 25; })[0].count,
+                "points":    score.points,
+                "position":  cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; })[0].ranking,
+                "score":     cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; })[0].points,
             }
         });
     }
