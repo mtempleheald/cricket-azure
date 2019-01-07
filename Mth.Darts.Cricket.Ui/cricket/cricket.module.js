@@ -2,7 +2,7 @@ var cricketApp = angular.module("cricketApp", ['cricketScoreboard', 'cricketHist
 cricketApp.factory('dataFactory', ['$http', function ($http) {
     var urlBase = 'https://mthcricket01api.azurewebsites.net/api';
     var dataFactory = {};
-    dataFactory.startMatch = function (maxRounds, scoringMode, ...players) {
+    dataFactory.startMatch = function (maxRounds, scoringMode, players) {
         let params = {
             "max_rounds": maxRounds,
             "scoring_mode": scoringMode,
@@ -145,7 +145,6 @@ cricketApp.controller("cricketController", function cricketController($scope, da
 
     cricket.startMatch = function () {
         console.log("startMatch initiated");
-        cricket.matchConfigured = true;
         dataFactory.startMatch(cricket.maxRounds, cricket.scoringMode, cricket.players)
             .then(function successCallback(response) {
                 console.log("Success response: ", response);
@@ -154,7 +153,7 @@ cricketApp.controller("cricketController", function cricketController($scope, da
             }, function errorCallback(response) {
                 console.log("Failure response: ", response);
             });
-        
+        cricket.matchConfigured = true;
         console.log("startMatch completed");
     }
 
