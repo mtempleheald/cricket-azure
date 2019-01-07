@@ -1,14 +1,13 @@
-var cricketApp = angular.module("cricketApp", ['cricketScoreboard', 'cricketHistory']);
-cricketApp.factory('dataFactory', ['$http', function ($http) { // back-end api services
+var cricketApp = angular.module("cricketApp", ['cricketScoreboard', 'cricketHistory', 'cricketConfig']);
+cricketApp.factory('dataFactory', ['$http', function ($http) {
     var urlBase = 'https://mthcricket01api.azurewebsites.net/api';
     var dataFactory = {};
     dataFactory.startMatch = function (maxRounds, scoringMode, ...players) {
-        let params = new HttpParams();
-        params = Params.append('max_rounds', maxRounds);
-        params = Params.append('scoring_mode', scoringMode);
-        for (let player of players) {
-            params = Params.append('player', player);
-        }
+        let params = {
+            "max_rounds": maxRounds,
+            "scoring_mode": scoringMode,
+            "player": players
+        };
         return $http.post(urlBase + "/matches", "", { "params": params });
     }
     dataFactory.throwDart = function (reqBody, section, bed) {
@@ -16,8 +15,8 @@ cricketApp.factory('dataFactory', ['$http', function ($http) { // back-end api s
             "method": 'POST',
             "url": urlBase + "/matches/" + "xxx" + "/throw",
             "params": {
-                section: section,
-                bed: bed
+                "section": section,
+                "bed": bed
             },
             "data": reqBody
         });
@@ -30,13 +29,27 @@ cricketApp.factory('dataFactory', ['$http', function ($http) { // back-end api s
     }
     return dataFactory;
 }]);
-cricketApp.controller("cricketController", function cricketController($scope, dataFactory) { // front-end app controller
+cricketApp.controller("cricketController", function cricketController($scope, dataFactory) {
 
     var cricket = this;
-    // match config
+    // match settings
+    cricket.matchConfigured = false;
     cricket.players = ["Player1", "Player2"];
     cricket.maxRounds = 20;
     cricket.scoringMode = "Standard";
+    cricket.addPlayer = function (player) {
+        console.log("addPlayer", player);
+        if (player != "") {
+            cricket.players.push(player);
+        }
+    }
+    cricket.removePlayer = function () {
+        console.log("removePlayer");
+        cricket.players.pop();
+    }
+    cricket.hideConfig = function() {
+        document.getElementsByClassName ('Config').style.display = "none";
+    }
     // full match state
     cricket.match = {};
     // scores and rankings extracted from the match, combined to a single array for lightweight presentation
@@ -132,6 +145,7 @@ cricketApp.controller("cricketController", function cricketController($scope, da
 
     cricket.startMatch = function () {
         console.log("startMatch initiated");
+        cricket.matchConfigured = true;
         dataFactory.startMatch(cricket.maxRounds, cricket.scoringMode, cricket.players)
             .then(function successCallback(response) {
                 console.log("Success response: ", response);
@@ -140,6 +154,7 @@ cricketApp.controller("cricketController", function cricketController($scope, da
             }, function errorCallback(response) {
                 console.log("Failure response: ", response);
             });
+        
         console.log("startMatch completed");
     }
 

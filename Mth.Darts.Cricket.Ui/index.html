@@ -13,16 +13,27 @@
   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#000000">
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.js"></script>
 </head>
 
 <body ng-app="cricketApp" id="cricketController" ng-controller="cricketController as cricket">
-  <div id="container">
+  <section class="config" ng-hide="cricket.matchConfigured">
+    <cricket-config 
+      players="cricket.players" 
+      max-rounds="cricket.maxRounds" 
+      scoring-mode="cricket.scoringMode"
+      start-match="cricket.startMatch()" 
+      add-player="cricket.addPlayer(player)" 
+      remove-player="cricket.removePlayer()">
+    </cricket-config>
+  </section>
+  <div id="match-container">
     <header>
       <h1>Cricket</h1>
     </header>
     <section class="scores">
-      <cricket-scoreboard scores="cricket.scores" max-rounds="cricket.maxRounds" current-round="cricket.currentRound" current-player="cricket.currentPlayer"></cricket-scoreboard>
+      <cricket-scoreboard scores="cricket.scores" max-rounds="cricket.maxRounds" current-round="cricket.currentRound"
+        current-player="cricket.currentPlayer"></cricket-scoreboard>
     </section>
     <section class="simple-entry">
       <button type="button" name="T20" value="t20" ng-click="cricket.hit('t20')">T20</button>
@@ -144,6 +155,8 @@
     <script src="cricket-scoreboard/cricket-scoreboard.component.js"></script>
     <script src="cricket-history/cricket-history.module.js"></script>
     <script src="cricket-history/cricket-history.component.js"></script>
+    <script src="cricket-config/cricket-config.module.js"></script>
+    <script src="cricket-config/cricket-config.component.js"></script>
     <audio id="hit1" src="res/hit1.wav">Audio not supported</audio>
     <audio id="hit2" src="res/hit2.wav">Audio not supported</audio>
     <audio id="hit3" src="res/hit3.wav">Audio not supported</audio>

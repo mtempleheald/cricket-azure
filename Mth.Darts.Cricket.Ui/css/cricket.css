@@ -22,7 +22,7 @@ body {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     /* font-size: 1.3em; */
 }
-#container {
+#match-container {
     display: grid;
     /*  Use a single column grid rather than flex by default because
         larger screens need switch to 2 column grid layout */  
@@ -103,7 +103,7 @@ button {
 }
 
 @media only screen and (max-width: 1250px) and (orientation: landscape) {
-    #container {
+    #match-container {
     /*  Still small screen so use buttons not interactive dartboard
         but 2 column layout with buttons on the right */
         grid-template-areas: 
@@ -124,7 +124,7 @@ button {
     }
 }
 @media only screen and (min-width: 1200px) and (orientation: landscape) {
-    #container {
+    #match-container {
     /*  Screen is large enough to show the dartboard
         hide the simple view and switch to 2 column fixed width layout */
         grid-template-columns: 600px, 900px;
@@ -133,6 +133,8 @@ button {
             "scores visual"
             "history visual"
             "footer .";
+        justify-content: start; /* whole grid on row axis - start|end|center|stretch|space-around|space-between|space-evenly */
+        align-content: start; /* whole grid on column axis - start|end|center|stretch|space-around|space-between|space-evenly */
     }
     section.visual-entry {
         display: grid;
@@ -142,10 +144,6 @@ button {
     }
     section.simple-entry {
         display: none;
-    }
-    #container {
-        justify-content: start; /* whole grid on row axis - start|end|center|stretch|space-around|space-between|space-evenly */
-        align-content: start; /* whole grid on column axis - start|end|center|stretch|space-around|space-between|space-evenly */
     }
     table {
         min-width: 20em;
@@ -290,4 +288,22 @@ path#labels {
 }
 path:hover, circle:hover {
     fill: yellow;
+}
+
+section.config {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    width: 100%;
+    height: 100%;
+    background-color: var(--board-bg);
+    display: flex;
+    justify-content: center;
+}
+section.config.ng-hide {
+    display: flex !IMPORTANT;/* override default just so that we can add transition */
+    opacity: 0;
+    z-index: -10000;
+    transition: all 2s ease;
 }

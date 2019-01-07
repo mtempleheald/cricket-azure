@@ -1,0 +1,24 @@
+<h1>Settings</h1>
+<form>
+    <label for="scoring_mode_standard">Standard</label>
+    <input name="scoring_mode" type="radio" id="scoring_mode_standard" value="Standard" ng-model="$ctrl.scoringMode"/>
+    <label for="scoring_mode_cutthroat">CutThroat</label>
+    <input name="scoring_mode" type="radio" id="scoring_mode_cutthroat" value="CutThroat" ng-model="$ctrl.scoringMode"/>
+    <br/>
+
+    <label for="max_rounds">Rounds per game</label>
+    <input name="max_rounds" type="text" ng-model="$ctrl.maxRounds"/>
+    <br/>
+
+    <label for="new_player">Player</label>
+    <input name="new_player" type="text" ng-model="newPlayer"/>
+    <br/>
+    <button type="button" ng-click="$ctrl.addPlayer({player: newPlayer}); newPlayer = '';">Add</button>
+    <button type="button" ng-click="$ctrl.removePlayer()">Remove</button>
+
+    <p ng-repeat="player in $ctrl.players">
+        {{player}}
+    </p>
+
+    <button type="button" ng-click="$ctrl.startMatch()">Start Match</button>
+</form>
