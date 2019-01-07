@@ -60,6 +60,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
     cricket.currentRound = 2;
     cricket.currentPlayer = "Player1";
     cricket.currentDart = 1;
+    cricket.gameComplete = false;
     // current throw
     cricket.section = "";
     cricket.bed = "";

@@ -71,15 +71,12 @@ section.simple-entry {
     grid-area: input;
     display: grid;
     grid-template-areas:
-        "t20 t19 t18 t17 t16 t15 ."
-        "d20 d19 d18 d17 d16 d15 bull"
         "s20 s19 s18 s17 s16 s15 outer"
+        "d20 d19 d18 d17 d16 d15 bull"
+        "t20 t19 t18 t17 t16 t15 ."       
         "miss skip undo newgame newgame . .";
     justify-self: stretch;
     align-self: stretch;
-    /* grid-auto-rows: 64px;
-    column-gap: 0.5em;
-    row-gap: 0.5em; */
 }
 section.history {
     grid-area: history;
@@ -97,7 +94,6 @@ button {
     color: var(--board-cream);    
     background-color: var(--board-green-dull);
     box-shadow: inset 0 0 1px 0 var(--board-cream);
-    /* border-radius: 15%; *//* 50% would be circular buttons*/
     padding: 0.2em;
     margin: 0.1em;
 }
@@ -192,18 +188,7 @@ table th {
     color: var(--board-red);
     font-weight: bold;
 }
-/*table td > span {
-    padding: 0 0.5em;
-}
-table th > span:before {
-    content: "\23F9";
-    color: var(--board-red);
-    padding: 0.5em;
-}
-table th > span.current:before {
-    content: "\25B6";
-    color: var(--board-green);
-}*/
+
 table td {
     text-align: center;
 }
