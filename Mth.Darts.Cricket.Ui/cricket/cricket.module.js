@@ -2,7 +2,7 @@ var cricketApp = angular.module("cricketApp", ['cricketScoreboard', 'cricketHist
 cricketApp.factory('dataFactory', ['$http', function ($http) {
     var urlBase = 'https://mthcricket01api.azurewebsites.net/api';
     var dataFactory = {};
-    dataFactory.startMatch = function (maxRounds, scoringMode, players) {        
+    dataFactory.startMatch = function (maxRounds, scoringMode, players) {
         let params = {
             "max_rounds": maxRounds,
             "scoring_mode": scoringMode,
@@ -53,61 +53,9 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
     // full match state
     cricket.match = {};
     // scores and rankings extracted from the match, combined to a single array for lightweight presentation
-    cricket.scores = [
-        {
-            "name": "Player1",
-            "Twenty": 3,
-            "Nineteen": "2",
-            "Eighteen": "1",
-            "Seventeen": "0",
-            "Sixteen": "0",
-            "Fifteen": "0",
-            "Bull": "0",
-            "points": "0",
-            "position": "0",
-            "score": "0"
-        },
-        {
-            "name": "Player2",
-            "Twenty": 0,
-            "Nineteen": "0",
-            "Eighteen": "0",
-            "Seventeen": "0",
-            "Sixteen": "0",
-            "Fifteen": "0",
-            "Bull": "3",
-            "points": "25",
-            "position": "0",
-            "score": "0"
-        }
-    ];
+    cricket.scores = [];
     // previous hits, don't need full undo history on the UI
-    cricket.throws = [
-        {
-            "name": "Player2",
-            "value": "Inner"
-        },
-        {
-            "name": "Player2",
-            "value": "-"
-        },
-        {
-            "name": "Player2",
-            "value": "Inner"
-        },
-        {
-            "name": "Player1",
-            "value": "S18"
-        },
-        {
-            "name": "Player1",
-            "value": "D19"
-        },
-        {
-            "name": "Player1",
-            "value": "T20"
-        }
-    ];
+    cricket.throws = [];
     // game state
     cricket.currentRound = 2;
     cricket.currentPlayer = "Player1";
@@ -126,38 +74,39 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
         cricket.currentPlayer = cricket.match.currentGame.currentPlayer;
         cricket.currentRound = cricket.match.currentGame.currentRound;
         cricket.currentDart = cricket.match.currentGame.currentDart;
-        cricket.scores = cricket.match.currentGame.scores.map(function (score) {            
+        cricket.scores = cricket.match.currentGame.scores.map(function (score) {
             return {
-                "name":      score.player,
-                "Twenty":    score.states.filter(function (state) { return state.section == 20; })[0].count,
-                "Nineteen":  score.states.filter(function (state) { return state.section == 19; })[0].count,
-                "Eighteen":  score.states.filter(function (state) { return state.section == 18; })[0].count,
+                "name": score.player,
+                "Twenty": score.states.filter(function (state) { return state.section == 20; })[0].count,
+                "Nineteen": score.states.filter(function (state) { return state.section == 19; })[0].count,
+                "Eighteen": score.states.filter(function (state) { return state.section == 18; })[0].count,
                 "Seventeen": score.states.filter(function (state) { return state.section == 17; })[0].count,
-                "Sixteen":   score.states.filter(function (state) { return state.section == 16; })[0].count,
-                "Fifteen":   score.states.filter(function (state) { return state.section == 15; })[0].count,
-                "Bull":      score.states.filter(function (state) { return state.section == 25; })[0].count,
-                "points":    score.points,
-                "position":  cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; })[0].ranking,
-                "score":     cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; })[0].points,
+                "Sixteen": score.states.filter(function (state) { return state.section == 16; })[0].count,
+                "Fifteen": score.states.filter(function (state) { return state.section == 15; })[0].count,
+                "Bull": score.states.filter(function (state) { return state.section == 25; })[0].count,
+                "points": score.points,
+                "position": cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; })[0].ranking,
+                "score": cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; })[0].points,
             }
         });
     }
 
     cricket.startMatch = function () {
-        $log.debug ("startMatch, maxRounds=", cricket.maxRounds, " scoringMode=", cricket.scoringMode, " players=", cricket.players);
+        $log.debug("startMatch, maxRounds=", cricket.maxRounds, " scoringMode=", cricket.scoringMode, " players=", cricket.players);
         dataFactory.startMatch(cricket.maxRounds, cricket.scoringMode, cricket.players)
             .then(function successCallback(response) {
                 $log.debug("Success response: ", response);
                 cricket.match = response.data;
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
-                $log.debug("Failure response: ", response);
+                $log.error("Failure response: ", response);
             });
         cricket.matchConfigured = true;
     }
 
     cricket.hit = function (hit) {
         $log.debug("hit ", hit);
+        var thrower = cricket.currentPlayer; // keep this for storing history, which we only want to do if the API call succeeds
         var section;
         var bed;
         switch (hit.substring(0, 1)) {
@@ -193,15 +142,20 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
                 $log.error("Unexpected hit, ", hit);
                 break;
         }
-        $log.debug ("throwDart, section=", section, " bed=", bed);
+
+        $log.debug("throwDart, section=", section, " bed=", bed);
         dataFactory.throwDart(cricket.match, section, bed)
             .then(function successCallback(response) {
                 $log.debug("Success response: ", response);
                 cricket.match = response.data;
                 cricket.parseMatchObject();
+                cricket.throws.push({
+                    "name": thrower,
+                    "value": hit.toUpperCase()
+                });
             }, function errorCallback(response) {
-                $log.debug("Failure response: ", response);
-            })
+                $log.error("Failure response: ", response);
+            });
     }
 
     cricket.miss = function () {
@@ -221,7 +175,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
                 cricket.match = response.data;
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
-                $log.debug("Failure response: ", response);
+                $log.error("Failure response: ", response);
             })
     }
 
@@ -233,7 +187,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
                 cricket.match = response.data;
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
-                $log.debug("Failure response: ", response);
+                $log.error("Failure response: ", response);
             })
     }
 
