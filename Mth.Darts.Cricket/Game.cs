@@ -85,14 +85,21 @@ namespace Mth.Darts.Cricket
         //   apply any extra hits as points according to the match configuration options
         private void UpdateScores(Section section, Bed bed, ScoringMode scoringMode)
         {
+            // First check that any points count, that is that there is at least one player who hasn't checked off this section
+            Boolean sectionClosed = 3 == scores.Min(score => score.states.Where(state => state.section == section)
+                                                                         .Min(state => state.count));
+            if (sectionClosed) {
+                return;
+            }
+
             // examine how many points have been scored this throw
             // (hits on score board + hits this throw - 3) * section value
-            int alreadyHit = (from score in scores
+            int playerHits = (from score in scores
                               where score.player == currentPlayer
                               from state in score.states
                               where state.section == section
                               select state.count).FirstOrDefault();
-            int pointsScored = Math.Max(0, (alreadyHit + (int)bed - 3) * (int)section);
+            int pointsScored = Math.Max(0, (playerHits + (int)bed - 3) * (int)section);
             //Console.WriteLine ("pointsScored = {0} ({1} + {2} - 3 * {3}", pointsScored, alreadyHit, (int) bed, (int) section);
 
             // Review all player scores
