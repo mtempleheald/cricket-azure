@@ -58,7 +58,7 @@
                 "FunctionAppName": "[concat(variables('ApplicationName'), 'api')]",
                 "FunctionsExtensionVersion": "~2",
                 "FunctionsWorkerRuntime": "dotnet",
-                "FrontEndUri": "[concat('https://', variables('ApplicationName'), 'uistorage', '.z6.web.core.windows.net')]"
+                "FrontEndUri": "[concat('https://', variables('ApplicationName'), 'ui', '.z6.web.core.windows.net')]"
             },
             "UiStorage": {
                 "Deploy": "True",
