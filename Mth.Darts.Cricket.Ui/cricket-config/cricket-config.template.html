@@ -8,18 +8,16 @@
 
     <label for="max_rounds">Rounds</label>
     <input name="max_rounds" type="text" ng-model="$ctrl.maxRounds" />
-    <br />
+    <br />  
 
-    <p>Players</p>
+    <input name="new_player" type="text" ng-model="newPlayer" placeholder="Player"/>
+    <button type="button" ng-click="$ctrl.addPlayer({player: newPlayer}); newPlayer = '';">Add</button>
+    <button type="button" ng-click="$ctrl.removePlayer()">Remove</button>
     <ul>
         <li ng-repeat="player in $ctrl.players">
             {{player}}
         </li>
     </ul>
-
-    <input name="new_player" type="text" ng-model="newPlayer" />
-    <button type="button" ng-click="$ctrl.addPlayer({player: newPlayer}); newPlayer = '';">Add</button>
-    <button type="button" ng-click="$ctrl.removePlayer()">Remove</button>
     <br />
 
     <button type="button" ng-click="$ctrl.startMatch()">Start Match</button>
