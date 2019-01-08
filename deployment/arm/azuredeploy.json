@@ -66,7 +66,7 @@
                 "Location": "[parameters('Location')]",
                 "Type": "Standard_LRS",
                 "Kind": "StorageV2",
-                "Name": "[concat(variables('ApplicationName'), 'uistorage')]",
+                "Name": "[concat(variables('ApplicationName'), 'ui')]",
                 "Purpose": "$web container holds all static web content"
             }
         }
