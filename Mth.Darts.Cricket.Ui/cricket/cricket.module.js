@@ -175,6 +175,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
                 $log.debug("Success response: ", response);
                 cricket.match = response.data;
                 cricket.parseMatchObject();
+                cricket.throws.pop();
             }, function errorCallback(response) {
                 $log.error("Failure response: ", response);
             })

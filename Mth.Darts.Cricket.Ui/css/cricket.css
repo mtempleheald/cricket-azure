@@ -305,8 +305,8 @@ section.config {
 section.config.ng-hide {
     display: flex !IMPORTANT;/* override default just so that we can add transition */
     opacity: 0;
-    z-index: -10000;
-    transition: all 2s ease;
+    z-index: -10;
+    transition: all 5s ease;/* First function run takes ~5 seconds, try to disguise this */
 }
 section.config * {
     margin: 0.5em ;
