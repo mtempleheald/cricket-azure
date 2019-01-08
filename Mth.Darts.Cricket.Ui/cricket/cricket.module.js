@@ -170,7 +170,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
 
     cricket.undo = function () {
         $log.debug("undoThrow initiated");
-        dataFactory.undoThrow()
+        dataFactory.undoThrow(cricket.match)
             .then(function successCallback(response) {
                 $log.debug("Success response: ", response);
                 cricket.match = response.data;
@@ -182,7 +182,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
 
     cricket.newGame = function () {
         $log.debug("newGame initiated");
-        dataFactory.newGame()
+        dataFactory.newGame(cricket.match)
             .then(function successCallback(response) {
                 $log.debug("Success response: ", response);
                 cricket.match = response.data;
