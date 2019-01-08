@@ -108,8 +108,8 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
     cricket.hit = function (hit) {
         $log.debug("hit ", hit);
         var thrower = cricket.currentPlayer; // keep this for storing history, which we only want to do if the API call succeeds
-        var section;
-        var bed;
+        var section = "";
+        var bed = "";
         switch (hit.substring(0, 1)) {
             case "s": // single
                 bed = 1;
