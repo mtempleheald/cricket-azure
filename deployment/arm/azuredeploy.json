@@ -45,12 +45,6 @@
                 "Name": "[concat(variables('ApplicationName'), 'apistorage')]",
                 "Purpose": "Azure functions require storage for source code, logging, diagnostics"
             },
-            "AppInsights": {
-                "Deploy": "True",
-                "TemplateUri": "[uri(variables('NestedTemplateDir'), 'insights.json')]",
-                "Location": "[parameters('Location')]",
-                "Name": "[concat(variables('ApplicationName'), 'apiinsights')]"
-            },
             "FunctionApp": {
                 "Deploy": "True",
                 "TemplateUri": "[uri(variables('NestedTemplateDir'), 'functionapp.json')]",
@@ -59,6 +53,13 @@
                 "FunctionsExtensionVersion": "~2",
                 "FunctionsWorkerRuntime": "dotnet",
                 "FrontEndUri": "[concat('https://', variables('ApplicationName'), 'ui', '.z6.web.core.windows.net')]"
+            },
+            "AppInsights": {
+                "Deploy": "True",
+                "TemplateUri": "[uri(variables('NestedTemplateDir'), 'insights.json')]",
+                "Location": "[parameters('Location')]",
+                "Name": "[concat(variables('ApplicationName'), 'apiinsights')]",
+                "FunctionAppName": "[concat(variables('ApplicationName'), 'api')]"
             },
             "UiStorage": {
                 "Deploy": "True",

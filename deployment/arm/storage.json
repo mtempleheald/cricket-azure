@@ -50,12 +50,23 @@
                 "purpose": "[parameters('Purpose')]"
             },
             "sku": {
-                "name": "[parameters('Type')]"
+                "name": "[parameters('Type')]",
+                "tier": "Standard"
             },
             "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": false,
                 "encryption": {
                     "keySource": "Microsoft.Storage",
                     "services": {
+                        "file": {
+                            "enabled": true
+                        },
                         "blob": {
                             "enabled": true
                         }
