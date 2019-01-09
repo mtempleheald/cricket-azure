@@ -51,7 +51,10 @@
                     "dataSource": {
                         "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
                         "resourceUri": "[resourceId('microsoft.insights/components', parameters('Name'))]"
-                    }
+                    },
+                    "operator": "GreaterThan",
+                    "threshold": 2,
+                    "windowSize": "PT1H"
                 },
                 "action": {
                     "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleEmailAction"
