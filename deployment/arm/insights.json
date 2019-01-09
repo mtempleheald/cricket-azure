@@ -69,7 +69,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('microsoft.insights/components', [parameters('Name')])]"
+                "[resourceId('microsoft.insights/components', parameters('Name'))]"
             ]
         }
     ],

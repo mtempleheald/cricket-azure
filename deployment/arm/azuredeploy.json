@@ -109,7 +109,8 @@
                 },
                 "parameters": {
                     "Location": {"value": "[variables('Environment').AppInsights.Location]"},
-                    "Name": {"value": "[variables('Environment').AppInsights.Name]"}
+                    "Name": {"value": "[variables('Environment').AppInsights.Name]"},
+                    "FunctionAppName": {"value": "[variables('Environment').AppInsights.FunctionAppName]"}
                 },
                 "debugSetting": {
                     "detailLevel": "[variables('DeploymentDebugDetailLevel')]"
