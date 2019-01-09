@@ -20,9 +20,9 @@
             "defaultValue": 2,
             "minValue": 1,
             "metadata": {
-              "description": "Enter response time threshold in seconds."
+                "description": "Enter response time threshold in seconds."
             }
-      }
+        }
     },
     "variables": {},
     "resources": [
@@ -34,9 +34,7 @@
             "comments": "api_url https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2015-05-01/components",
             "location": "[parameters('Location')]",
             "tags": {},
-            "scale": null,
             "properties": {
-                "Application_Type": "web",
                 "ApplicationId": "[parameters('Name')]"
             },
             "dependsOn": []
@@ -55,6 +53,7 @@
                 "description": "Response time alert",
                 "isEnabled": true,
                 "condition": {
+                    "$type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition, Microsoft.WindowsAzure.Management.Mon.Client",
                     "odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
                     "dataSource": {
                         "$type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource, Microsoft.WindowsAzure.Management.Mon.Client",
