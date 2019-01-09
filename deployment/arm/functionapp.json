@@ -72,7 +72,7 @@
                 "enabled": true,
                 "hostNameSslStates": [
                     {
-                        "name": "[concat(parameters('FunctionAppName')],'.azurewebsites.net')]",
+                        "name": "[concat(parameters('FunctionAppName'),'.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "virtualIP": null,
                         "thumbprint": null,
@@ -80,7 +80,7 @@
                         "hostType": "Standard"
                     },
                     {
-                        "name": "[concat(parameters('FunctionAppName')],'.scm.azurewebsites.net')]",
+                        "name": "[concat(parameters('FunctionAppName'),'.scm.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "virtualIP": null,
                         "thumbprint": null,
