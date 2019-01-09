@@ -30,24 +30,24 @@
             "name": "[parameters('Name')]",
             "type": "Microsoft.Insights/components",
             "kind": "web",
-            "apiVersion": "2015-05-01",
+            "apiVersion": "2014-04-01",
             "comments": "api_url https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2015-05-01/components",
             "location": "[parameters('Location')]",
             "tags": {},
             "scale": null,
             "properties": {
-                "Application_Type": "web"
+                "Application_Type": "web",
+                "ApplicationId": "[parameters('Name')]"
             },
             "dependsOn": []
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/3c9be968-5a4d-4c7d-8173-7f357052d332/resourceGroups/mthtest01/providers/microsoft.insights/alertrules/Failure Anomalies - mthtest01functionapp'.",
             "type": "microsoft.insights/alertrules",
             "name": "[concat('Failure Anomalies - ', parameters('FunctionAppName'))]",
-            "apiVersion": "2016-03-01",
+            "apiVersion": "2014-04-01",
             "location": "[parameters('Location')]",
             "tags": {
-                "[concat('hidden-link:/subscriptions/3c9be968-5a4d-4c7d-8173-7f357052d332/resourceGroups/', resourceGroup().name, '/providers/microsoft.insights/components/', parameters('FunctionAppName'))]": "Resource"
+                "[concat('hidden-link:' resourceId('Microsoft.Insights/components', parameters('FunctionAppName')))]": "Resource"
             },
             "scale": null,
             "properties": {
