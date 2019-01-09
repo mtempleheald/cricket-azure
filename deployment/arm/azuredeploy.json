@@ -28,6 +28,10 @@
             "allowedValues": [
                 "PRD"
             ]
+        },
+        "UiEndpointSuffix": {
+            "type": "string",
+            "defaultValue": ".z16.web.core.windows.net"
         }
     },
     "variables": {
@@ -52,7 +56,7 @@
                 "FunctionAppName": "[concat(variables('ApplicationName'), 'api')]",
                 "FunctionsExtensionVersion": "~2",
                 "FunctionsWorkerRuntime": "dotnet",
-                "FrontEndUri": "[concat('https://', variables('ApplicationName'), 'ui', '.z6.web.core.windows.net')]"
+                "FrontEndUri": "[concat('https://', variables('ApplicationName'), 'ui', parameters('UiEndpointSuffix')]"
             },
             "AppInsights": {
                 "Deploy": "True",
