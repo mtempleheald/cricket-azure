@@ -56,7 +56,7 @@
                 "FunctionAppName": "[concat(variables('ApplicationName'), 'api')]",
                 "FunctionsExtensionVersion": "~2",
                 "FunctionsWorkerRuntime": "dotnet",
-                "FrontEndUri": "[concat('https://', variables('ApplicationName'), 'ui', parameters('UiEndpointSuffix')]"
+                "FrontEndUri": "[concat('https://', variables('ApplicationName'), 'ui', parameters('UiEndpointSuffix'))]"
             },
             "AppInsights": {
                 "Deploy": "True",
