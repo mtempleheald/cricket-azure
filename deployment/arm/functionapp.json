@@ -267,7 +267,7 @@
             "type": "Microsoft.Web/sites/hostNameBindings",
             "name": "[concat(parameters('FunctionAppName'), '/', parameters('FunctionAppName'), '.azurewebsites.net')]",
             "apiVersion": "2016-08-01",
-            "location": "North Europe",
+            "location": "[parameters('Location')]",
             "scale": null,
             "properties": {
                 "siteName": "[parameters('FunctionAppName')]",
