@@ -90,7 +90,42 @@
                 ],
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('planName'))]",
                 "reserved": false,
-                "siteConfig": null,
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[parameters('AppInsightsKey')]"
+                        },
+                        {
+                            "name": "AzureWebJobsDisableHomepage",
+                            "value": "true"
+                        },
+                        {
+                            "name": "AzureWebJobsDotNetReleaseCompilation",
+                            "value": "false"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[parameters('StorageAccountConnectionString')]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "[parameters('FunctionsExtensionVersion')]"
+                        },
+                        {
+                            "name": "FUNCTIONS_WORKER_RUNTIME",
+                            "value": "[parameters('FunctionsWorkerRuntime')]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                            "value": "[parameters('StorageAccountConnectionString')]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTSHARE",
+                            "value": "[parameters('FunctionAppName')]"
+                        }
+                    ]
+                },
                 "scmSiteAlsoStopped": false,
                 "hostingEnvironmentProfile": null,
                 "clientAffinityEnabled": false,
@@ -125,7 +160,7 @@
                     "index.php"
                 ],
                 "netFrameworkVersion": "v4.0",
-                "phpVersion": "5.6",
+                "phpVersion": "", //"5.6",
                 "pythonVersion": "",
                 "nodeVersion": "",
                 "linuxFxVersion": "",
@@ -138,40 +173,7 @@
                 "detailedErrorLoggingEnabled": false,
                 "publishingUsername": "[parameters('FunctionAppName')]",
                 "publishingPassword": null,
-                "appSettings": [
-                    {
-                        "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                        "value": "[parameters('AppInsightsKey')]"
-                    },
-                    {
-                        "name": "AzureWebJobsDisableHomepage",
-                        "value": "true"
-                    },
-                    {
-                        "name": "AzureWebJobsDotNetReleaseCompilation",
-                        "value": "false"
-                    },
-                    {
-                        "name": "AzureWebJobsStorage",
-                        "value": "[parameters('StorageAccountConnectionString')]"
-                    },
-                    {
-                        "name": "FUNCTIONS_EXTENSION_VERSION",
-                        "value": "[parameters('FunctionsExtensionVersion')]"
-                    },
-                    {
-                        "name": "FUNCTIONS_WORKER_RUNTIME",
-                        "value": "[parameters('FunctionsWorkerRuntime')]"
-                    },
-                    {
-                        "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-                        "value": "[parameters('StorageAccountConnectionString')]"
-                    },
-                    {
-                        "name": "WEBSITE_CONTENTSHARE",
-                        "value": "[parameters('FunctionAppName')]"
-                    }
-                ],
+                "appSettings": null,
                 "azureStorageAccounts": {},
                 "metadata": null,
                 "connectionStrings": null,
