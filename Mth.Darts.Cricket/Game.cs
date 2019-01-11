@@ -85,22 +85,20 @@ namespace Mth.Darts.Cricket
         //   apply any extra hits as points according to the match configuration options
         private void UpdateScores(Section section, Bed bed, ScoringMode scoringMode)
         {
-            // First check that any points count, that is that there is at least one player who hasn't checked off this section
-            Boolean sectionClosed = 3 == scores.Min(score => score.states.Where(state => state.section == section)
-                                                                         .Min(state => state.count));
-            if (sectionClosed) {
-                return;
-            }
-
             // examine how many points have been scored this throw
             // (hits on score board + hits this throw - 3) * section value
-            int playerHits = (from score in scores
-                              where score.player == currentPlayer
-                              from state in score.states
-                              where state.section == section
+            int playerHits = (from   score in scores
+                              where  score.player == currentPlayer
+                              from   state in score.states
+                              where  state.section == section
                               select state.count).FirstOrDefault();
-            int pointsScored = Math.Max(0, (playerHits + (int)bed - 3) * (int)section);
-            //Console.WriteLine ("pointsScored = {0} ({1} + {2} - 3 * {3}", pointsScored, alreadyHit, (int) bed, (int) section);
+
+            // check that any points count, that is that there is at least one other player who hasn't checked off this section
+            Boolean sectionClosed = 3 == scores.Where (score => score.player != currentPlayer)
+                                               .Min (score => score.states.Where(state => state.section == section)
+                                                                          .Min(state => state.count));
+                                                                          
+            int pointsScored = sectionClosed ? 0 : Math.Max(0, (playerHits + (int)bed - 3) * (int)section);
 
             // Review all player scores
             //   update section states for the current player only
