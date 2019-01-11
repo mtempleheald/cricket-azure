@@ -26,14 +26,16 @@ namespace Mth.Darts.Cricket.Api
             string body = await req.ReadAsStringAsync();
             Match match = JsonConvert.DeserializeObject<Match>(body);
 
-            // Expecting 2 parameters, bed and section, values optional in case of miss
+            // Expecting 2 parameters, bed and section, values optional in case of miss or non-scoring hit
             Section section;
-            bool sectionHit = Enum.TryParse(req.Query["section"][0], out section);
+            bool sectionHit = Enum.TryParse(req.Query["section"][0], true, out section);
+            Section? effectiveSection = Enum.IsDefined(typeof(Section), section) ? section : (Section?)null;
             Bed bed;
-            bool bedHit = Enum.TryParse(req.Query["bed"][0], out bed);
+            bool bedHit = Enum.TryParse(req.Query["bed"][0], true, out bed);
+            Bed? effectiveBed = Enum.IsDefined(typeof(Bed), bed) ? bed : (Bed?)null;
 
             // Apply changes to the match object
-            match.Throw (section, bed);
+            match.Throw (effectiveSection, effectiveBed);
 
             // Return the result
             var json = JsonConvert.SerializeObject(match, Formatting.Indented);

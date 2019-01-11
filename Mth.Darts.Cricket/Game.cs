@@ -41,7 +41,6 @@ namespace Mth.Darts.Cricket
         internal Game() { }
         internal void Throw(Section? section, Bed? bed, ScoringMode scoringMode, int maxRounds = 0)
         {
-
             if (section.HasValue && bed.HasValue)
             {
                 // A valid throw has been made and needs to be applied to the current game
