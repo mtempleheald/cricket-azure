@@ -64,6 +64,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
     // current throw
     cricket.section = "";
     cricket.bed = "";
+    cricket.busy = true;
 
     function playAudio(sound) {
         var audio = document.getElementById(sound);
@@ -101,11 +102,18 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
                 cricket.parseMatchObject();
             }, function errorCallback(response) {
                 $log.error("Failure response: ", response);
+            })
+            .finally(function () {
+                cricket.matchConfigured = true;
+                cricket.busy = false;
             });
-        cricket.matchConfigured = true;
     }
 
     cricket.hit = function (hit) {
+        if (cricket.busy) {
+            $log.debug ("Previous request still executing");
+        }
+        cricket.busy = true;
         $log.debug("hit ", hit);
         var thrower = cricket.currentPlayer; // keep this for storing history, which we only want to do if the API call succeeds
         var section = "";
@@ -143,7 +151,6 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
                 $log.error("Unexpected hit, ", hit);
                 break;
         }
-
         $log.debug("throwDart, section=", section, " bed=", bed);
         dataFactory.throwDart(cricket.match, section, bed)
             .then(function successCallback(response) {
@@ -156,6 +163,9 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
                 });
             }, function errorCallback(response) {
                 $log.error("Failure response: ", response);
+            })
+            .finally(function () {
+                cricket.busy = false;
             });
     }
 
@@ -169,6 +179,10 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
     }
 
     cricket.undo = function () {
+        if (cricket.busy) {
+            $log.debug ("Previous request still executing");
+        }
+        cricket.busy = true;
         $log.debug("undoThrow initiated");
         dataFactory.undoThrow(cricket.match)
             .then(function successCallback(response) {
@@ -179,9 +193,16 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
             }, function errorCallback(response) {
                 $log.error("Failure response: ", response);
             })
+            .finally(function () {
+                cricket.busy = false;
+            });
     }
 
     cricket.newGame = function () {
+        if (cricket.busy) {
+            $log.debug ("Previous request still executing");
+        }
+        cricket.busy = true;
         $log.debug("newGame initiated");
         dataFactory.newGame(cricket.match)
             .then(function successCallback(response) {
@@ -191,6 +212,9 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
             }, function errorCallback(response) {
                 $log.error("Failure response: ", response);
             })
+            .finally(function () {
+                cricket.busy = false;
+            });
     }
 
 });
