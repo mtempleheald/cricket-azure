@@ -42,36 +42,36 @@
         current-player="cricket.currentPlayer"></cricket-scoreboard>
     </section>
     <section class="simple-entry">
-      <button type="button" name="T20" value="t20" ng-click="cricket.hit('t20')">T20</button>
-      <button type="button" name="T19" value="t19" ng-click="cricket.hit('t19')">T19</button>
-      <button type="button" name="T18" value="t18" ng-click="cricket.hit('t18')">T18</button>
-      <button type="button" name="T17" value="t17" ng-click="cricket.hit('t17')">T17</button>
-      <button type="button" name="T16" value="t16" ng-click="cricket.hit('t16')">T16</button>
-      <button type="button" name="T15" value="t15" ng-click="cricket.hit('t15')">T15</button>
-      <button type="button" name="D20" value="d20" ng-click="cricket.hit('d20')">D20</button>
-      <button type="button" name="D19" value="d19" ng-click="cricket.hit('d19')">D19</button>
-      <button type="button" name="D18" value="d18" ng-click="cricket.hit('d18')">D18</button>
-      <button type="button" name="D17" value="d17" ng-click="cricket.hit('d17')">D17</button>
-      <button type="button" name="D16" value="d16" ng-click="cricket.hit('d16')">D16</button>
-      <button type="button" name="D15" value="d15" ng-click="cricket.hit('d15')">D15</button>
-      <button type="button" name="Bull" value="inner" ng-click="cricket.hit('inner')">Bull</button>
-      <button type="button" name="S20" value="s20" ng-click="cricket.hit('s20')">S20</button>
-      <button type="button" name="S19" value="s19" ng-click="cricket.hit('s19')">S19</button>
-      <button type="button" name="S18" value="s18" ng-click="cricket.hit('s18')">S18</button>
-      <button type="button" name="S17" value="s17" ng-click="cricket.hit('s17')">S17</button>
-      <button type="button" name="S16" value="s16" ng-click="cricket.hit('s16')">S16</button>
-      <button type="button" name="S15" value="s15" ng-click="cricket.hit('s15')">S15</button>
-      <button type="button" name="Outer" value="outer" ng-click="cricket.hit('outer')">Outer</button>
-      <button type="button" name="Miss" value="miss" ng-click="cricket.miss()">Miss</button>
+      <button type="button" name="T20" value="t20" ng-click="cricket.hit('t20')" ng-disabled="cricket.gameComplete == true">T20</button>
+      <button type="button" name="T19" value="t19" ng-click="cricket.hit('t19')" ng-disabled="cricket.gameComplete == true">T19</button>
+      <button type="button" name="T18" value="t18" ng-click="cricket.hit('t18')" ng-disabled="cricket.gameComplete == true">T18</button>
+      <button type="button" name="T17" value="t17" ng-click="cricket.hit('t17')" ng-disabled="cricket.gameComplete == true">T17</button>
+      <button type="button" name="T16" value="t16" ng-click="cricket.hit('t16')" ng-disabled="cricket.gameComplete == true">T16</button>
+      <button type="button" name="T15" value="t15" ng-click="cricket.hit('t15')" ng-disabled="cricket.gameComplete == true">T15</button>
+      <button type="button" name="D20" value="d20" ng-click="cricket.hit('d20')" ng-disabled="cricket.gameComplete == true">D20</button>
+      <button type="button" name="D19" value="d19" ng-click="cricket.hit('d19')" ng-disabled="cricket.gameComplete == true">D19</button>
+      <button type="button" name="D18" value="d18" ng-click="cricket.hit('d18')" ng-disabled="cricket.gameComplete == true">D18</button>
+      <button type="button" name="D17" value="d17" ng-click="cricket.hit('d17')" ng-disabled="cricket.gameComplete == true">D17</button>
+      <button type="button" name="D16" value="d16" ng-click="cricket.hit('d16')" ng-disabled="cricket.gameComplete == true">D16</button>
+      <button type="button" name="D15" value="d15" ng-click="cricket.hit('d15')" ng-disabled="cricket.gameComplete == true">D15</button>
+      <button type="button" name="Bull" value="inner" ng-click="cricket.hit('inner')" ng-disabled="cricket.gameComplete == true">Bull</button>
+      <button type="button" name="S20" value="s20" ng-click="cricket.hit('s20')" ng-disabled="cricket.gameComplete == true">S20</button>
+      <button type="button" name="S19" value="s19" ng-click="cricket.hit('s19')" ng-disabled="cricket.gameComplete == true">S19</button>
+      <button type="button" name="S18" value="s18" ng-click="cricket.hit('s18')" ng-disabled="cricket.gameComplete == true">S18</button>
+      <button type="button" name="S17" value="s17" ng-click="cricket.hit('s17')" ng-disabled="cricket.gameComplete == true">S17</button>
+      <button type="button" name="S16" value="s16" ng-click="cricket.hit('s16')" ng-disabled="cricket.gameComplete == true">S16</button>
+      <button type="button" name="S15" value="s15" ng-click="cricket.hit('s15')" ng-disabled="cricket.gameComplete == true">S15</button>
+      <button type="button" name="Outer" value="outer" ng-click="cricket.hit('outer')" ng-disabled="cricket.gameComplete == true">Outer</button>
       <button type="button" name="Undo" value="undo" ng-click="cricket.undo()">Undo</button>
-      <button type="button" name="Skip" value="skip" ng-click="cricket.skip()" ng-if="cricket.currentDart == 1">Skip</button>
-      <button type="button" name="New" value="new" ng-click="cricket.newGame()" ng-if="cricket.gameComplete == true">New Game</button>
+      <button type="button" name="Miss" value="miss" ng-click="cricket.miss()" ng-disabled="cricket.gameComplete == true">Miss</button>
+      <button type="button" name="Skip" value="skip" ng-click="cricket.skip()" ng-disabled="cricket.gameComplete == true || cricket.currentDart != 1">Skip</button>
+      <button type="button" name="New" value="new" ng-click="cricket.newGame()" ng-disabled="cricket.gameComplete == false">New Game</button>
     </section>
     <section class="visual-entry">
-      <button type="button" name="Miss" value="miss" ng-click="cricket.miss()">Miss</button>
       <button type="button" name="Undo" value="undo" ng-click="cricket.undo()">Undo</button>
-      <button type="button" name="Skip" value="skip" ng-click="cricket.skip()" ng-if="cricket.currentDart == 1">Skip</button>
-      <button type="button" name="New" value="new" ng-click="cricket.newGame()" ng-if="cricket.gameComplete == true">New Game</button>
+      <button type="button" name="Miss" value="miss" ng-click="cricket.miss()" ng-disabled="cricket.gameComplete == true">Miss</button>      
+      <button type="button" name="Skip" value="skip" ng-click="cricket.skip()" ng-disabled="cricket.gameComplete == true || cricket.currentDart != 1">Skip</button>
+      <button type="button" name="New" value="new" ng-click="cricket.newGame()" ng-disabled="cricket.gameComplete == false">New Game</button>
       <svg id="dartboard" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px"
         y="0px" width="787px" viewBox="0 0 787 774" enable-background="new 0 0 787 774" xml:space="preserve">
         <g id="areas">
@@ -157,7 +157,6 @@
     <footer>
       <span><a href="https://github.com/mtempleheald/cricket-azure">This project on GitHub</a></span>
     </footer>
-    <!-- <script src="js/cricket.js"></script> -->
     <script src="cricket/cricket.module.js"></script>
     <script src="cricket-scoreboard/cricket-scoreboard.module.js"></script>
     <script src="cricket-scoreboard/cricket-scoreboard.component.js"></script>

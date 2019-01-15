@@ -74,7 +74,7 @@ section.simple-entry {
         "s20 s19 s18 s17 s16 s15 outer"
         "d20 d19 d18 d17 d16 d15 bull"
         "t20 t19 t18 t17 t16 t15 ."       
-        "miss skip undo newgame newgame . .";
+        "undo miss skip newgame newgame . .";
     justify-self: stretch;
     align-self: stretch;
 }
@@ -96,6 +96,9 @@ button {
     box-shadow: inset 0 0 1px 0 var(--board-cream);
     padding: 0.2em;
     margin: 0.1em;
+}
+button:disabled, button[disabled] {
+    opacity: 0.25;
 }
 input {
     background-color: var(--board-bg);
@@ -125,8 +128,8 @@ a {
         "t17 d17 s17"
         "t16 d16 s16"
         "t15 d15 s15"
-        "miss bull outer"
-        "skip undo newgame";
+        "undo bull outer"
+        "miss skip newgame";
     }
 }
 @media only screen and (min-width: 1200px) and (orientation: landscape) {
@@ -146,7 +149,7 @@ a {
         display: grid;
         grid-template-areas:
         "board board board board"
-        "miss skip undo newgame"
+        "undo miss skip newgame"
     }
     section.simple-entry {
         display: none;
@@ -154,7 +157,7 @@ a {
     table {
         min-width: 20em;
     }
-    button[name=Miss], button[name=Undo], button[name=Skip] {
+    button[name=Miss], button[name=Undo], button[name=Skip], button[name=New] {
         padding: 5px 25px;
         margin: 5px 15px;
     }
@@ -254,17 +257,18 @@ button[name="Outer"] {
 button[name="Bull"] {
     grid-area: bull;
 }
+button[name=Undo] {
+    grid-area: undo;
+}
 button[name=Miss] {
     grid-area: miss;
     background-color: var(--board-red);
 }
-button[name=Undo] {
-    grid-area: undo;
-}
 button[name=Skip] {
     grid-area: skip;
+    background-color: var(--board-red);
 }
-button[name=NewGame] {
+button[name=New] {
     grid-area: newgame;
 }
 svg#dartboard {

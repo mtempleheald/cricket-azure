@@ -64,7 +64,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
     // current throw
     cricket.section = "";
     cricket.bed = "";
-    cricket.busy = true;
+    cricket.busy = true; /* replace with proper queue https://stackoverflow.com/questions/899102/how-do-i-store-javascript-functions-in-a-queue-for-them-to-be-executed-eventuall#answer-899133 */
 
     function playAudio(sound) {
         var audio = document.getElementById(sound);
@@ -76,6 +76,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
         cricket.currentPlayer = cricket.match.currentGame.currentPlayer;
         cricket.currentRound = cricket.match.currentGame.currentRound;
         cricket.currentDart = cricket.match.currentGame.currentDart;
+        cricket.gameComplete = cricket.match.currentGame.complete;
         cricket.scores = cricket.match.currentGame.scores.map(function (score) {
             return {
                 "name": score.player,
@@ -90,7 +91,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
                 "position": cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; })[0].ranking,
                 "score": cricket.match.scores.filter(function (mscore) { return mscore.player === score.player; })[0].points,
             }
-        });
+        });        
     }
 
     cricket.startMatch = function () {
@@ -106,6 +107,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
             .finally(function () {
                 cricket.matchConfigured = true;
                 cricket.busy = false;
+                cricket.gameComplete = false;
             });
     }
 
@@ -214,6 +216,7 @@ cricketApp.controller("cricketController", function cricketController($scope, $l
             })
             .finally(function () {
                 cricket.busy = false;
+                cricket.gameComplete = false;
             });
     }
 
