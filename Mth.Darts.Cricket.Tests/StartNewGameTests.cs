@@ -44,7 +44,7 @@ namespace Mth.Darts.Cricket.Tests
             Assert.Empty (match.previousGames); 
             match.StartNewGame();
             // Now game should have been rolled over and a new one created
-            Assert.NotEmpty (match.previousGames); 
+            Assert.NotEmpty (match.previousGames);
             Assert.False(match.currentGame.complete);
         }
 

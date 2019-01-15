@@ -11,6 +11,8 @@ namespace Mth.Darts.Cricket
     /// </summary>
     public sealed class Game : ICloneable
     {
+        private const int countTargetsPerPlayerPerGame = 21; // 7 sections, 3 targets per section
+        private const int sumTargetsPerPlayerPerGame = 390; // SUM(section value * 3)
         [JsonProperty()]
         internal String currentPlayer { get; set; }
         [JsonProperty()]
@@ -65,7 +67,7 @@ namespace Mth.Darts.Cricket
             currentRound = (currentDart == 1 && currentPlayer == scores.First().player) ? currentRound + 1 : currentRound;
 
         }
-        // The game is complete once a player has hit all targets and is ranked first
+        // The game is complete once a player has hit all targets and has the most points (least for cutthroat mode)
         // or if all rounds have completed
         private void UpdateGameCompletionStatus(ScoringMode scoringMode, int maxRounds)
         {
@@ -74,11 +76,11 @@ namespace Mth.Darts.Cricket
                 complete = true;
                 return;
             }
-            complete = (
-                scores.OrderBy(s => s.ranking)
-                    .First()
-                    .states
-                    .Sum(s => s.count * (int)s.section) == 390) ? true : false;
+            complete = sumTargetsPerPlayerPerGame == 
+                        (scores.OrderBy(score => (scoringMode == ScoringMode.CutThroat) ? score.points : -score.points)
+                            .First()
+                            .states
+                            .Sum(s => s.count * (int)s.section));
         }
 
         //   apply any extra hits as points according to the match configuration options
@@ -86,17 +88,17 @@ namespace Mth.Darts.Cricket
         {
             // examine how many points have been scored this throw
             // (hits on score board + hits this throw - 3) * section value
-            int playerHits = (from   score in scores
-                              where  score.player == currentPlayer
-                              from   state in score.states
-                              where  state.section == section
+            int playerHits = (from score in scores
+                              where score.player == currentPlayer
+                              from state in score.states
+                              where state.section == section
                               select state.count).FirstOrDefault();
 
             // check that any points count, that is that there is at least one other player who hasn't checked off this section
-            Boolean sectionClosed = 3 == scores.Where (score => score.player != currentPlayer)
-                                               .Min (score => score.states.Where(state => state.section == section)
-                                                                          .Min(state => state.count));
-                                                                          
+            Boolean sectionClosed = 3 == scores.Where(score => score.player != currentPlayer)
+                                               .Min(score => score.states.Where(state => state.section == section)
+                                                                         .Min(state => state.count));
+
             int pointsScored = sectionClosed ? 0 : Math.Max(0, (playerHits + (int)bed - 3) * (int)section);
 
             // Review all player scores

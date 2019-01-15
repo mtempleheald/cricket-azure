@@ -135,6 +135,29 @@ namespace Mth.Darts.Cricket.Tests
         }
 
         [Fact]
+        public void ThrowDart_LowerScore_GameNotCompleted () {
+            // Perfect game by player 1, higher score obtained by player 2
+            match.Throw (Section.Twenty, Bed.Treble);
+            match.Throw (Section.Nineteen, Bed.Treble);
+            match.Throw (Section.Eighteen, Bed.Treble);
+            match.Throw (Section.Fifteen, Bed.Treble);
+            match.Throw (Section.Fifteen, Bed.Treble);
+            match.Throw (null, null);
+            match.Throw (Section.Seventeen, Bed.Treble);
+            match.Throw (Section.Sixteen, Bed.Treble);
+            match.Throw (Section.Fifteen, Bed.Treble);
+            match.Throw (null, null);
+            match.Throw (null, null);
+            match.Throw (null, null);
+            match.Throw (Section.Bull, Bed.Double);
+            // game ongoing
+            Assert.False(match.currentGame.complete);
+            match.Throw (Section.Bull, Bed.Double);
+            // game throw made and the crowd goes wild!
+            Assert.False(match.currentGame.complete);
+        }
+
+        [Fact]
         public void ThrowDart_GameSnapshotTaken () {
             Assert.Empty (match.currentGameHistory);
             match.Throw (Section.Twenty, Bed.Treble);
