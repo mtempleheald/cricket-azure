@@ -41,12 +41,12 @@ steps:
     projects: '$(serviceNamespace).Api.Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
   displayName: 'Test API'
-- script: dotnet publish '$(serviceNamespace).Api' --output '../$(serviceNamespace).Api.Release'
+- script: dotnet publish '$(serviceNamespace).Api' --output '$(Build.BinariesDirectory)/$(serviceNamespace).Api.Release'
   displayName: 'Prepare Build artifacts'
 # https://github.com/Microsoft/azure-pipelines-tasks/blob/master/Tasks/ArchiveFilesV2/task.json
 - task: ArchiveFiles@2
   inputs: 
-    rootFolderOrFile: '$(serviceNamespace).Api.Release'
+    rootFolderOrFile: '$(Build.BinariesDirectory)/$(serviceNamespace).Api.Release'
     includeRootFolder: false # https://docs.microsoft.com/en-us/azure/azure-functions/functions-continuous-deployment#continuous-deployment-requirements
     archiveType: zip
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(serviceNamespace).Api.Release.zip' # Default, but clearer to include here anyway
