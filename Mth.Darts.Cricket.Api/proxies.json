@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json.schemastore.org/proxies",
+    "proxies": {
+        "proxyStartMatch": {
+            "disabled": false,
+            "matchCondition": {
+                "methods": [ "POST" ],
+                "route": "/api/matches"
+            },
+            "backendUri": "%WEB_HOST%/api/matches"
+        },
+        "proxyThrowDart": {
+            "disabled": false,
+            "matchCondition": {
+                "methods": [ "POST" ],
+                "route": "/api/matches/{matchGuid}/throw"
+            },
+            "backendUri": "%WEB_HOST%/api/matches/{matchGuid}/throw"
+        },
+        "proxyUndoThrow": {
+            "disabled": false,
+            "matchCondition": {
+                "methods": [ "POST" ],
+                "route": "/api/matches/{matchGuid}/undo"
+            },
+            "backendUri": "%WEB_HOST%/api/matches/{matchGuid}/undo"
+        },
+        "proxyStartNewGame": {
+            "disabled": false,
+            "matchCondition": {
+                "methods": [ "POST" ],
+                "route": "/api/matches/{matchGuid}/newgame"
+            },
+            "backendUri": "%WEB_HOST%/api/matches/{matchGuid}/newgame"
+        }
+    }
+}
